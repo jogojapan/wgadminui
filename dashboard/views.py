@@ -337,9 +337,9 @@ class InterfaceStatusView(AdminRequiredMixin, TemplateView):
             now = datetime.datetime.now(tz=datetime.timezone.utc)
             for peer in peers:
                 live = status_map.get(peer.peer_public_key)
-                if live and live["latest_handshake"]:
+                if live and live["last_handshake"]:
                     last_seen = datetime.datetime.fromtimestamp(
-                        live["latest_handshake"], tz=datetime.timezone.utc
+                        live["last_handshake"], tz=datetime.timezone.utc
                     )
                     live["last_seen_dt"] = last_seen
                     live["last_seen_delta"] = now - last_seen
