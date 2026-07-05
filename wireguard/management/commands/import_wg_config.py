@@ -52,6 +52,7 @@ def _parse_conf(conf_path: str) -> dict:
 
     interface_data: dict = {}
     peers: list[dict] = []
+    pending_comment = ""  # comment line that precedes the next [Peer]
 
     for section in sections:
         section = section.strip()
@@ -60,7 +61,15 @@ def _parse_conf(conf_path: str) -> dict:
 
         header_match = re.match(r"\[(\w+)\]", section)
         if not header_match:
+            # No header — this is a comment block sitting between two
+            # [Peer] sections (e.g. "# Alice's Laptop" on its own line
+            # before the next [Peer]).  Save it and attach to the next peer.
+            for line in section.splitlines():
+                stripped = line.strip()
+                if stripped.startswith("#"):
+                    pending_comment = stripped.lstrip("#").strip()
             continue
+
         section_type = header_match.group(1)
 
         # Extract key = value pairs
@@ -76,13 +85,20 @@ def _parse_conf(conf_path: str) -> dict:
         if section_type == "Interface":
             interface_data = kv
         elif section_type == "Peer":
-            # Extract comment lines before PublicKey as a potential name
+            # Prefer a comment inside the [Peer] section; fall back to a
+            # pending comment that appeared right before this [Peer] block.
             comment = ""
             for line in section.splitlines():
                 stripped = line.strip()
                 if stripped.startswith("#"):
                     comment = stripped.lstrip("#").strip()
-                    break  # take the first comment as the name
+                    break
+
+            if not comment and pending_comment:
+                comment = pending_comment
+
+            pending_comment = ""  # consumed
+
             peers.append(
                 {
                     "public_key": kv.get("PublicKey", ""),
