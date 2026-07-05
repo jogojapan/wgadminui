@@ -128,7 +128,7 @@ ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_USER_MODEL_USERNAME_FIELD = "username"
-ACCOUNT_LOGIN_BY_CODE_ENABLED = False
+ACCOUNT_LOGIN_BY_CODE_ENABLED = True
 # Use the invitations adapter so django-invitations can hook into allauth signals
 ACCOUNT_ADAPTER = "invitations.models.InvitationsAdapter"
 
