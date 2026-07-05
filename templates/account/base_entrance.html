@@ -1,5 +1,5 @@
-{# Override: entrance pages extend our base layout directly.
-   The card wrapper is added by each individual template (login, signup, etc.)
-   because Django template inheritance doesn't allow wrapping a child's
-   {% block content %} without the child's cooperation. #}
+{# Override: entrance pages extend our base layout directly. #}
+{# The card wrapper is added by each individual template (login, signup, etc.) #}
+{# because Django template inheritance does not allow wrapping a child's #}
+{# ``block content`` without the child's cooperation. #}
 {% extends "allauth/layouts/base.html" %}
