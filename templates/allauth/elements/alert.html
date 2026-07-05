@@ -1,0 +1,7 @@
+{# Bootstrap-styled alert element #}
+{% load allauth %}
+<div class="alert alert-{{ attrs.type|default:'info' }} alert-dismissible fade show" role="alert">
+  {% slot %}
+  {% endslot %}
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>

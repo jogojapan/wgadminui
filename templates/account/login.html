@@ -1,0 +1,76 @@
+{# Bootstrap-styled login page — extends our base layout with a centered card #}
+{% extends "allauth/layouts/base.html" %}
+{% load i18n %}
+{% load allauth account %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h1 class="mb-4">{% trans "Sign In" %}</h1>
+
+        {% if not SOCIALACCOUNT_ONLY %}
+          {% url 'account_login' as login_url %}
+          <form method="post" action="{{ login_url }}" class="mb-3">
+            {% csrf_token %}
+            {% for field in form.visible_fields %}
+              <div class="mb-3">
+                <label class="form-label" for="{{ field.id_for_label }}">
+                  {{ field.label }}
+                </label>
+                <input type="{{ field.field.widget.input_type }}"
+                       name="{{ field.html_name }}"
+                       id="{{ field.id_for_label }}"
+                       class="form-control{% if field.errors %} is-invalid{% endif %}"
+                       {% if field.field.required %}required{% endif %}
+                       {% if field.value %}value="{{ field.value }}"{% endif %}
+                       {% if field.field.widget.attrs.placeholder %}placeholder="{{ field.field.widget.attrs.placeholder }}"{% endif %}
+                       {% if field.field.widget.attrs.autocomplete %}autocomplete="{{ field.field.widget.attrs.autocomplete }}"{% endif %}>
+                {% for error in field.errors %}
+                  <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+              </div>
+            {% endfor %}
+            {% for field in form.hidden_fields %}{{ field }}{% endfor %}
+            {{ redirect_field }}
+            <button type="submit" class="btn btn-primary w-100">
+              {% trans "Sign In" %}
+            </button>
+          </form>
+        {% endif %}
+
+        {% if LOGIN_BY_CODE_ENABLED or PASSKEY_LOGIN_ENABLED %}
+          <hr class="my-4">
+          <div class="d-grid gap-2">
+            {% if PASSKEY_LOGIN_ENABLED %}
+              <button type="submit" form="mfa_login" id="passkey_login"
+                      class="btn btn-outline-primary">
+                {% trans "Sign in with a passkey" %}
+              </button>
+            {% endif %}
+            {% if LOGIN_BY_CODE_ENABLED %}
+              <a href="{{ request_login_code_url }}" class="btn btn-outline-primary">
+                {% trans "Send me a sign-in code" %}
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if SOCIALACCOUNT_ENABLED %}
+          {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_body %}
+  {{ block.super }}
+  {% if PASSKEY_LOGIN_ENABLED %}
+    {% include "mfa/webauthn/snippets/login_script.html" with button_id="passkey_login" %}
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,6 @@
+{# Bootstrap-styled badge element #}
+{% load allauth %}
+<span class="badge bg-secondary" {% if attrs.title %}title="{{ attrs.title }}"{% endif %}>
+  {% slot %}
+  {% endslot %}
+</span>

@@ -1,0 +1,14 @@
+{# Centered card layout for login, signup, password reset, etc. #}
+{% extends "allauth/layouts/base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        {% block entrance_content %}{% endblock %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

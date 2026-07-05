@@ -1,0 +1,62 @@
+{# Bootstrap-styled signup page #}
+{% extends "allauth/layouts/base.html" %}
+{% load allauth i18n %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h1 class="mb-4">{% trans "Sign Up" %}</h1>
+
+        <p class="mb-3">
+          {% blocktranslate %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktranslate %}
+        </p>
+
+        {% if not SOCIALACCOUNT_ONLY %}
+          {% url 'account_signup' as action_url %}
+          <form method="post" action="{{ action_url }}" class="mb-3">
+            {% csrf_token %}
+            {% for field in form.visible_fields %}
+              <div class="mb-3">
+                <label class="form-label" for="{{ field.id_for_label }}">
+                  {{ field.label }}
+                </label>
+                <input type="{{ field.field.widget.input_type }}"
+                       name="{{ field.html_name }}"
+                       id="{{ field.id_for_label }}"
+                       class="form-control{% if field.errors %} is-invalid{% endif %}"
+                       {% if field.field.required %}required{% endif %}
+                       {% if field.value %}value="{{ field.value }}"{% endif %}
+                       {% if field.field.widget.attrs.placeholder %}placeholder="{{ field.field.widget.attrs.placeholder }}"{% endif %}
+                       {% if field.field.widget.attrs.autocomplete %}autocomplete="{{ field.field.widget.attrs.autocomplete }}"{% endif %}>
+                {% for error in field.errors %}
+                  <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+              </div>
+            {% endfor %}
+            {% for field in form.hidden_fields %}{{ field }}{% endfor %}
+            {{ redirect_field }}
+            <button type="submit" class="btn btn-primary w-100">
+              {% trans "Sign Up" %}
+            </button>
+          </form>
+        {% endif %}
+
+        {% if PASSKEY_SIGNUP_ENABLED %}
+          <hr class="my-4">
+          <a href="{{ signup_by_passkey_url }}" class="btn btn-outline-primary w-100">
+            {% trans "Sign up using a passkey" %}
+          </a>
+        {% endif %}
+
+        {% if SOCIALACCOUNT_ENABLED %}
+          {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

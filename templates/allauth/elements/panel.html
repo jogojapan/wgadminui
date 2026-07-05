@@ -1,0 +1,17 @@
+{# Bootstrap-styled panel (card) element #}
+{% load allauth %}
+<div class="card mb-3">
+  <div class="card-header fw-semibold">
+    {% slot title %}
+    {% endslot %}
+  </div>
+  <div class="card-body">
+    {% slot body %}
+    {% endslot %}
+  </div>
+  {% if slots.actions %}
+    <div class="card-footer d-flex gap-2">
+      {% for action in slots.actions %}{{ action }}{% endfor %}
+    </div>
+  {% endif %}
+</div>
