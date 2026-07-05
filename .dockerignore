@@ -1,0 +1,12 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.git/
+.gitignore
+data/
+staticfiles/
+*.sqlite3
+.env
+docker-compose.override.yml
+README.md
