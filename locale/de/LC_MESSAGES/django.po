@@ -1,0 +1,770 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-05 21:14+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: accounts/admin.py:16 templates/dashboard/admin_users.html:71
+msgid "Role"
+msgstr "Rolle"
+
+#: accounts/models.py:15 templates/base.html:45
+#: templates/dashboard/admin_users.html:87
+msgid "Admin"
+msgstr "Administrator"
+
+#: accounts/models.py:16 templates/dashboard/admin_users.html:89
+msgid "Member"
+msgstr "Mitglied"
+
+#: accounts/models.py:19
+msgid "email address"
+msgstr "E-Mail-Adresse"
+
+#: accounts/models.py:25
+msgid "Admin users can manage all peers and invite new users."
+msgstr "Administratoren können alle Peers verwalten und neue Benutzer einladen."
+
+#: accounts/models.py:32
+msgid "language"
+msgstr "Sprache"
+
+#: accounts/models.py:33
+msgid "Preferred language for the user interface and emails."
+msgstr "Bevorzugte Sprache für die Benutzeroberfläche und E-Mails."
+
+#: accounts/models.py:41
+msgid "user"
+msgstr "Benutzer"
+
+#: accounts/models.py:42
+msgid "users"
+msgstr "Benutzer"
+
+#: dashboard/forms.py:8
+msgid "Device name"
+msgstr "Gerätename"
+
+#: dashboard/forms.py:9
+msgid "A friendly name for this client device (e.g. 'iPhone', 'Laptop')."
+msgstr "Ein aussagekraeftiger Name fuer dieses Geraet (z.B. 'iPhone', 'Laptop')."
+
+#: dashboard/forms.py:14
+msgid "DNS servers"
+msgstr "DNS-Server"
+
+#: dashboard/forms.py:17
+msgid "Comma-separated DNS servers to include in the client config."
+msgstr "Kommagetrennte DNS-Server für die Client-Konfiguration."
+
+#: dashboard/forms.py:21
+msgid "Assign specific IP (optional)"
+msgstr "Bestimmte IP zuweisen (optional)"
+
+#: dashboard/forms.py:24
+msgid ""
+"Leave blank to auto-assign the next available IP in the subnet. If provided, "
+"must be a free address within the interface subnet."
+msgstr ""
+
+#: dashboard/views.py:122 templates/dashboard/interface_status.html:11
+msgid "No WireGuard interface configured."
+msgstr "Kein WireGuard-Interface konfiguriert."
+
+#: dashboard/views.py:147
+#, python-format
+msgid "Failed to create peer: %s"
+msgstr "Fehler beim Erstellen des Peers: %s"
+
+#: dashboard/views.py:181
+msgid ""
+"The private key for this configuration is no longer available. You can "
+"regenerate the keypair to get a new one."
+msgstr ""
+
+#: dashboard/views.py:194
+#, python-format
+msgid "Configuration for '%s' is ready."
+msgstr "Konfiguration fuer '%s' ist bereit."
+
+#: dashboard/views.py:242
+msgid ""
+"<p class=\"text-muted small\">QR code unavailable — private key no longer "
+"stored. Use \"Regenerate keypair\" to create a new one.</p>"
+msgstr ""
+
+#: dashboard/views.py:272
+#, python-format
+msgid "Failed to regenerate keypair: %s"
+msgstr "Fehler beim Neugenerieren des Schlüsselpaars: %s"
+
+#: dashboard/views.py:307
+#, python-format
+msgid "Peer '%s' deleted."
+msgstr "Peer '%s' geloescht."
+
+#: dashboard/views.py:309
+#, python-format
+msgid "Error deleting peer: %s"
+msgstr "Fehler beim Löschen des Peers: %s"
+
+#: dashboard/views.py:330
+msgid "Please provide an email address."
+msgstr "Bitte geben Sie eine E-Mail-Adresse an."
+
+#: dashboard/views.py:333
+#, python-format
+msgid "%s is already a registered user."
+msgstr "%s ist bereits ein registrierter Benutzer."
+
+#: dashboard/views.py:336
+#, python-format
+msgid "An invitation is already pending for %s."
+msgstr "Für %s ist bereits eine Einladung ausstehend."
+
+#: dashboard/views.py:340
+#, python-format
+msgid "Invitation sent to %s."
+msgstr "Einladung an %s gesendet."
+
+#: templates/account/email_confirm.html:5
+#: templates/account/email_confirm.html:12
+msgid "Confirm Email Address"
+msgstr "E-Mail-Adresse bestätigen"
+
+#: templates/account/email_confirm.html:17
+#, python-format
+msgid ""
+"Please confirm that <a href=\"mailto:%(email)s\">%(email)s</a> is an email "
+"address for user %(user_display)s."
+msgstr ""
+
+#: templates/account/email_confirm.html:23
+msgid "Confirm"
+msgstr "Bestätigen"
+
+#: templates/account/email_confirm.html:28
+#, python-format
+msgid ""
+"Unable to confirm %(confirmation.email_address.email)s because it is already "
+"confirmed by a different account."
+msgstr ""
+
+#: templates/account/email_confirm.html:34
+#, python-format
+msgid ""
+"This email confirmation link expired or is invalid. Please <a "
+"href=\"%(email_url)s\">issue a new email confirmation request</a>."
+msgstr ""
+
+#: templates/account/login.html:6 templates/account/login.html:13
+#: templates/account/login.html:40
+msgid "Sign In"
+msgstr "Anmelden"
+
+#: templates/account/login.html:51
+msgid "Sign in with a passkey"
+msgstr "Mit Passkey anmelden"
+
+#: templates/account/login.html:56
+msgid "Send me a sign-in code"
+msgstr "Anmeldecode zusenden"
+
+#: templates/account/logout.html:5 templates/account/logout.html:12
+#: templates/account/logout.html:19
+msgid "Sign Out"
+msgstr "Abmelden"
+
+#: templates/account/logout.html:13
+msgid "Are you sure you want to sign out?"
+msgstr "Möchten Sie sich wirklich abmelden?"
+
+#: templates/account/password_reset.html:5
+#: templates/account/password_reset.html:12
+msgid "Password Reset"
+msgstr "Passwort zurücksetzen"
+
+#: templates/account/password_reset.html:16
+msgid ""
+"Forgotten your password? Enter your email address below, and we'll send you "
+"an email allowing you to reset it."
+msgstr ""
+
+#: templates/account/password_reset.html:36
+msgid "Reset My Password"
+msgstr "Mein Passwort zurücksetzen"
+
+#: templates/account/password_reset.html:40
+msgid "Please contact us if you have any trouble resetting your password."
+msgstr "Kontaktieren Sie uns, falls Sie Probleme beim Zurücksetzen Ihres Passworts haben."
+
+#: templates/account/signup.html:5
+msgid "Signup"
+msgstr "Registrieren"
+
+#: templates/account/signup.html:12 templates/account/signup.html:43
+msgid "Sign Up"
+msgstr "Registrieren"
+
+#: templates/account/signup.html:15
+#, python-format
+msgid ""
+"Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
+msgstr ""
+
+#: templates/account/signup.html:51
+msgid "Sign up using a passkey"
+msgstr "Mit Passkey registrieren"
+
+#: templates/base.html:8
+msgid "WireGuard Admin"
+msgstr "WireGuard Admin"
+
+#: templates/base.html:34 templates/dashboard/dashboard.html:5
+#: templates/dashboard/dashboard.html:9
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: templates/base.html:39
+msgid "New config"
+msgstr "Neue Konfiguration"
+
+#: templates/base.html:49 templates/dashboard/admin_users.html:4
+msgid "Users"
+msgstr "Benutzer"
+
+#: templates/base.html:52 templates/dashboard/interface_status.html:5
+#: templates/dashboard/interface_status.html:8
+msgid "WireGuard Status"
+msgstr "WireGuard-Status"
+
+#: templates/base.html:56
+msgid "Django Admin"
+msgstr "Django-Admin"
+
+#: templates/base.html:70 templates/dashboard/admin_users.html:27
+msgid "Language"
+msgstr "Sprache"
+
+#: templates/base.html:95
+msgid "Passkeys &amp; 2FA"
+msgstr "Passkeys &amp; 2FA"
+
+#: templates/base.html:98
+msgid "Change password"
+msgstr "Passwort ändern"
+
+#: templates/base.html:105
+msgid "Logout"
+msgstr "Abmelden"
+
+#: templates/base.html:129
+#, python-format
+msgid "%(site_name)s — WireGuard Administration UI"
+msgstr "%(site_name)s — WireGuard-Administrationsoberfläche"
+
+#: templates/dashboard/admin_users.html:7
+msgid "User management"
+msgstr "Benutzerverwaltung"
+
+#: templates/dashboard/admin_users.html:14
+msgid "Invite a new user"
+msgstr "Neuen Benutzer einladen"
+
+#: templates/dashboard/admin_users.html:17
+msgid ""
+"Users can only join by invitation. Enter their email below and they will "
+"receive a link to create their account."
+msgstr ""
+
+#: templates/dashboard/admin_users.html:22
+msgid "Email address"
+msgstr "E-Mail-Adresse"
+
+#: templates/dashboard/admin_users.html:37
+msgid "Send invitation"
+msgstr "Einladung senden"
+
+#: templates/dashboard/admin_users.html:46
+msgid "Pending invitations"
+msgstr "Ausstehende Einladungen"
+
+#: templates/dashboard/admin_users.html:64
+#, python-format
+msgid "Registered users (%(count)s)"
+msgstr "Registrierte Benutzer (%(count)s)"
+
+#: templates/dashboard/admin_users.html:70
+msgid "Email"
+msgstr "E-Mail"
+
+#: templates/dashboard/admin_users.html:72
+#: templates/dashboard/interface_status.html:23
+#: templates/dashboard/interface_status.html:82
+msgid "Status"
+msgstr "Status"
+
+#: templates/dashboard/admin_users.html:73
+msgid "Joined"
+msgstr "Beigetreten"
+
+#: templates/dashboard/admin_users.html:82
+msgid "you"
+msgstr "Sie"
+
+#: templates/dashboard/admin_users.html:94
+msgid "Active"
+msgstr "Aktiv"
+
+#: templates/dashboard/admin_users.html:96
+msgid "Inactive"
+msgstr "Inaktiv"
+
+#: templates/dashboard/dashboard.html:11 templates/dashboard/peer_create.html:4
+msgid "New configuration"
+msgstr "Neue Konfiguration"
+
+#: templates/dashboard/dashboard.html:19
+#, python-format
+msgid ""
+"No WireGuard interface has been configured yet. Please add one via the <a "
+"href=\"%(admin_add_url)s\">Django admin</a>."
+msgstr ""
+
+#: templates/dashboard/dashboard.html:29
+#: templates/dashboard/interface_status.html:26
+msgid "Running"
+msgstr "Aktiv"
+
+#: templates/dashboard/dashboard.html:33
+#: templates/dashboard/interface_status.html:28
+msgid "Down"
+msgstr "Inaktiv"
+
+#: templates/dashboard/dashboard.html:37
+msgid "Port"
+msgstr "Port"
+
+#: templates/dashboard/dashboard.html:41
+msgid "Full status"
+msgstr "Vollständiger Status"
+
+#: templates/dashboard/dashboard.html:68
+#: templates/dashboard/interface_status.html:99
+#: templates/dashboard/peer_detail.html:73
+msgid "Online"
+msgstr "Online"
+
+#: templates/dashboard/dashboard.html:73
+#, python-format
+msgid "Last seen %(ago)ss ago"
+msgstr "Zuletzt vor %(ago)s s gesehen"
+
+#: templates/dashboard/dashboard.html:77
+#: templates/dashboard/peer_detail.html:79
+msgid "Never connected"
+msgstr "Nie verbunden"
+
+#: templates/dashboard/dashboard.html:81
+msgid "No status data"
+msgstr "Keine Statusdaten"
+
+#: templates/dashboard/dashboard.html:86
+msgid "Details"
+msgstr "Details"
+
+#: templates/dashboard/dashboard.html:90
+msgid "Setup pending"
+msgstr "Einrichtung ausstehend"
+
+#: templates/dashboard/dashboard.html:102
+msgid "You have no WireGuard configurations yet."
+msgstr "Sie haben noch keine WireGuard-Konfigurationen."
+
+#: templates/dashboard/dashboard.html:103
+msgid "Create your first configuration"
+msgstr "Erste Konfiguration erstellen"
+
+#: templates/dashboard/interface_status.html:17
+#, python-format
+msgid "Interface: %(name)s"
+msgstr "Interface: %(name)s"
+
+#: templates/dashboard/interface_status.html:33
+msgid "Listen port"
+msgstr "Listen-Port"
+
+#: templates/dashboard/interface_status.html:38
+#: templates/dashboard/peer_detail.html:52
+msgid "Public key"
+msgstr "Öffentlicher Schlüssel"
+
+#: templates/dashboard/interface_status.html:42
+msgid "Subnet"
+msgstr "Subnetz"
+
+#: templates/dashboard/interface_status.html:45
+#: templates/dashboard/interface_status.html:85
+#: templates/dashboard/peer_detail.html:84
+msgid "Endpoint"
+msgstr "Endpunkt"
+
+#: templates/dashboard/interface_status.html:55
+msgid "systemctl not available inside container — showing wg show data only."
+msgstr "systemctl im Container nicht verfügbar — es werden nur wg-show-Daten angezeigt."
+
+#: templates/dashboard/interface_status.html:69
+#, python-format
+msgid "Peers (%(count)s)"
+msgstr "Peers (%(count)s)"
+
+#: templates/dashboard/interface_status.html:71
+msgid "Online:"
+msgstr "Online:"
+
+#: templates/dashboard/interface_status.html:72
+msgid "Total:"
+msgstr "Gesamt:"
+
+#: templates/dashboard/interface_status.html:79
+msgid "Name"
+msgstr "Name"
+
+#: templates/dashboard/interface_status.html:80
+#: templates/dashboard/peer_delete_confirm.html:23
+msgid "Owner"
+msgstr "Besitzer"
+
+#: templates/dashboard/interface_status.html:81
+msgid "IP"
+msgstr "IP"
+
+#: templates/dashboard/interface_status.html:83
+msgid "Last handshake"
+msgstr "Letzter Handshake"
+
+#: templates/dashboard/interface_status.html:84
+msgid "RX / TX"
+msgstr "RX / TX"
+
+#: templates/dashboard/interface_status.html:101
+msgid "Offline"
+msgstr "Offline"
+
+#: templates/dashboard/interface_status.html:103
+#: templates/dashboard/interface_status.html:114
+msgid "Never"
+msgstr "Nie"
+
+#: templates/dashboard/interface_status.html:112
+msgid "ago"
+msgstr "her"
+
+#: templates/dashboard/interface_status.html:130
+msgid "No peers configured."
+msgstr "Keine Peers konfiguriert."
+
+#: templates/dashboard/partials/qr_fragment.html:4
+#: templates/dashboard/peer_setup.html:25
+#, python-format
+msgid "WireGuard QR code for %(name)s"
+msgstr "WireGuard QR-Code für %(name)s"
+
+#: templates/dashboard/partials/qr_fragment.html:9
+msgid ""
+"This QR code contains your private key. Only show it in a safe environment."
+msgstr ""
+
+#: templates/dashboard/peer_create.html:9
+msgid "New WireGuard configuration"
+msgstr "Neue WireGuard-Konfiguration"
+
+#: templates/dashboard/peer_create.html:14
+msgid ""
+"A new keypair will be generated for you. On the next page you will be shown "
+"the private key and QR code <strong>exactly once</strong> — please save them "
+"immediately."
+msgstr ""
+
+#: templates/dashboard/peer_create.html:42
+#: templates/dashboard/peer_delete_confirm.html:28
+#: templates/dashboard/peer_regenerate_confirm.html:26
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: templates/dashboard/peer_create.html:44
+msgid "Generate &amp; create"
+msgstr "Generieren &amp; erstellen"
+
+#: templates/dashboard/peer_delete_confirm.html:4
+#, python-format
+msgid "Delete: %(name)s"
+msgstr "Löschen: %(name)s"
+
+#: templates/dashboard/peer_delete_confirm.html:11
+#, python-format
+msgid "Delete configuration: %(name)s"
+msgstr "Konfiguration löschen: %(name)s"
+
+#: templates/dashboard/peer_delete_confirm.html:14
+#, python-format
+msgid "Are you sure you want to delete <strong>%(name)s</strong>?"
+msgstr "Möchten Sie <strong>%(name)s</strong> wirklich löschen?"
+
+#: templates/dashboard/peer_delete_confirm.html:16
+msgid "The peer will be removed from the WireGuard interface immediately."
+msgstr "Der Peer wird sofort vom WireGuard-Interface entfernt."
+
+#: templates/dashboard/peer_delete_confirm.html:17
+msgid "All configuration data will be permanently deleted."
+msgstr "Alle Konfigurationsdaten werden dauerhaft gelöscht."
+
+#: templates/dashboard/peer_delete_confirm.html:18
+msgid "This cannot be undone."
+msgstr "Dies kann nicht rückgängig gemacht werden."
+
+#: templates/dashboard/peer_delete_confirm.html:21
+#: templates/dashboard/peer_detail.html:40
+msgid "Assigned IP"
+msgstr "Zugewiesene IP"
+
+#: templates/dashboard/peer_delete_confirm.html:32
+msgid "Yes, delete permanently"
+msgstr "Ja, endgültig löschen"
+
+#: templates/dashboard/peer_detail.html:11
+#, python-format
+msgid "Owned by %(owner)s — created %(created)s"
+msgstr "Besitzer: %(owner)s — erstellt %(created)s"
+
+#: templates/dashboard/peer_detail.html:16
+msgid "Regenerate keypair"
+msgstr "Schlüsselpaar neu generieren"
+
+#: templates/dashboard/peer_detail.html:19
+msgid "Delete"
+msgstr "Löschen"
+
+#: templates/dashboard/peer_detail.html:29
+#, python-format
+msgid ""
+"Setup has not been acknowledged yet. <a href=\"%(setup_url)s\">Return to "
+"setup page</a> to view the QR code and private key."
+msgstr ""
+
+#: templates/dashboard/peer_detail.html:37
+msgid "Configuration details"
+msgstr "Konfigurationsdetails"
+
+#: templates/dashboard/peer_detail.html:43
+msgid "Interface"
+msgstr "Interface"
+
+#: templates/dashboard/peer_detail.html:46
+msgid "Server endpoint"
+msgstr "Server-Endpunkt"
+
+#: templates/dashboard/peer_detail.html:49
+msgid "DNS"
+msgstr "DNS"
+
+#: templates/dashboard/peer_detail.html:56
+msgid "Last synced"
+msgstr "Zuletzt synchronisiert"
+
+#: templates/dashboard/peer_detail.html:66
+msgid "Live status"
+msgstr "Live-Status"
+
+#: templates/dashboard/peer_detail.html:70
+msgid "Connection"
+msgstr "Verbindung"
+
+#: templates/dashboard/peer_detail.html:76
+#, python-format
+msgid "Offline (%(ago)ss ago)"
+msgstr "Offline (vor %(ago)s s)"
+
+#: templates/dashboard/peer_detail.html:89
+msgid "Received"
+msgstr "Empfangen"
+
+#: templates/dashboard/peer_detail.html:92
+msgid "Sent"
+msgstr "Gesendet"
+
+#: templates/dashboard/peer_detail.html:99
+msgid "No live data available (WireGuard may be down or peer not yet active)."
+msgstr "Keine Live-Daten verfügbar (WireGuard ist möglicherweise inaktiv oder der Peer noch nicht aktiv)."
+
+#: templates/dashboard/peer_detail.html:113
+msgid "Show QR code"
+msgstr "QR-Code anzeigen"
+
+#: templates/dashboard/peer_detail.html:120
+msgid "Back to dashboard"
+msgstr "Zurück zum Dashboard"
+
+#: templates/dashboard/peer_regenerate_confirm.html:4
+#, python-format
+msgid "Regenerate keypair: %(name)s"
+msgstr "Schlüsselpaar neu generieren: %(name)s"
+
+#: templates/dashboard/peer_regenerate_confirm.html:11
+#, python-format
+msgid "Regenerate keypair for %(name)s"
+msgstr "Schlüsselpaar für %(name)s neu generieren"
+
+#: templates/dashboard/peer_regenerate_confirm.html:14
+msgid "This will:"
+msgstr "Dies wird:"
+
+#: templates/dashboard/peer_regenerate_confirm.html:16
+msgid "Generate a new private/public keypair."
+msgstr "Ein neues privates/öffentliches Schlüsselpaar generieren."
+
+#: templates/dashboard/peer_regenerate_confirm.html:17
+msgid "Replace the existing peer on the WireGuard server immediately."
+msgstr "Den bestehenden Peer sofort auf dem WireGuard-Server ersetzen."
+
+#: templates/dashboard/peer_regenerate_confirm.html:18
+msgid "Show you the new private key and QR code <strong>exactly once</strong>."
+msgstr "Den neuen privaten Schlüssel und QR-Code <strong>genau einmal</strong> anzeigen."
+
+#: templates/dashboard/peer_regenerate_confirm.html:22
+msgid ""
+"Any device currently using the old configuration <strong>will be "
+"disconnected</strong> until reconfigured with the new key."
+msgstr ""
+
+#: templates/dashboard/peer_regenerate_confirm.html:30
+msgid "Yes, regenerate keypair"
+msgstr "Ja, Schlüsselpaar neu generieren"
+
+#: templates/dashboard/peer_setup.html:4 templates/dashboard/peer_setup.html:10
+#, python-format
+msgid "Setup: %(name)s"
+msgstr "Einrichtung: %(name)s"
+
+#: templates/dashboard/peer_setup.html:13
+msgid "Save this now!"
+msgstr "Jetzt speichern!"
+
+#: templates/dashboard/peer_setup.html:15
+msgid ""
+"This is the <strong>only time</strong> the private key and QR code will be "
+"shown. After you click <em>\\"
+msgstr ""
+
+#: templates/dashboard/peer_setup.html:23
+msgid "Scan with your WireGuard app"
+msgstr "Mit Ihrer WireGuard-App scannen"
+
+#: templates/dashboard/peer_setup.html:32
+msgid "Or copy the configuration file"
+msgstr "Oder Konfigurationsdatei kopieren"
+
+#: templates/dashboard/peer_setup.html:37
+msgid "Copy to clipboard"
+msgstr "In die Zwischenablage kopieren"
+
+#: templates/dashboard/peer_setup.html:48
+msgid "Assigned IP:"
+msgstr "Zugewiesene IP:"
+
+#: templates/dashboard/peer_setup.html:49
+msgid "Server endpoint:"
+msgstr "Server-Endpunkt:"
+
+#: templates/dashboard/peer_setup.html:57
+msgid "I have saved the QR code or configuration file on my device."
+msgstr "Ich habe den QR-Code oder die Konfigurationsdatei auf meinem Gerät gespeichert."
+
+#: templates/dashboard/peer_setup.html:61
+msgid "I have saved my configuration"
+msgstr "Ich habe meine Konfiguration gespeichert"
+
+#: wgadminui/settings.py:234
+msgid "English"
+msgstr "Englisch"
+
+#: wgadminui/settings.py:235
+msgid "German"
+msgstr "Deutsch"
+
+#: wgadminui/settings.py:236
+msgid "Japanese"
+msgstr "Japanisch"
+
+#: wireguard/models.py:19
+msgid "Interface name, e.g. wg0"
+msgstr "Interface-Name, z.B. wg0"
+
+#: wireguard/models.py:25
+msgid "Subnet for peer IP allocation, e.g. 10.0.0.0/24"
+msgstr "Subnetz für Peer-IP-Zuweisung, z.B. 10.0.0.0/24"
+
+#: wireguard/models.py:32
+msgid "Public IP or hostname clients use to reach this server"
+msgstr "Öffentliche IP oder Hostname, über den Clients diesen Server erreichen"
+
+#: wireguard/models.py:36
+msgid "Absolute path to the .conf file, e.g. /etc/wireguard/wg0.conf"
+msgstr "Absoluter Pfad zur .conf-Datei, z.B. /etc/wireguard/wg0.conf"
+
+#: wireguard/models.py:46
+msgid "WireGuard interface"
+msgstr "WireGuard-Interface"
+
+#: wireguard/models.py:47
+msgid "WireGuard interfaces"
+msgstr "WireGuard-Interfaces"
+
+#: wireguard/models.py:77
+msgid "user interface access"
+msgstr "UI-Zugriff"
+
+#: wireguard/models.py:78
+msgid "user interface accesses"
+msgstr "UI-Zugriffe"
+
+#: wireguard/models.py:107
+msgid "Friendly name for this client device"
+msgstr "Aussagekräftiger Name für dieses Client-Gerät"
+
+#: wireguard/models.py:112
+msgid "WireGuard public key for this peer"
+msgstr "WireGuard Public Key für diesen Peer"
+
+#: wireguard/models.py:117
+msgid "IP/CIDR assigned to this peer, e.g. 10.0.0.2/32"
+msgstr "Diesem Peer zugewiesene IP/CIDR, z.B. 10.0.0.2/32"
+
+#: wireguard/models.py:124
+msgid "Comma-separated DNS servers for the client config"
+msgstr "Kommagetrennte DNS-Server für die Client-Konfiguration"
+
+#: wireguard/models.py:129
+msgid "User has confirmed they saved the private key / QR code"
+msgstr "Benutzer hat bestätigt, dass der private Schlüssel / QR-Code gespeichert wurde"
+
+#: wireguard/models.py:135
+msgid "peer configuration"
+msgstr "Peer-Konfiguration"
+
+#: wireguard/models.py:136
+msgid "peer configurations"
+msgstr "Peer-Konfigurationen"

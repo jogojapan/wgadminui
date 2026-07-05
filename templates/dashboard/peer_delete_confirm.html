@@ -1,34 +1,35 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Delete: {{ peer.name }}{% endblock %}
+{% block title %}{% blocktranslate with name=peer.name %}Delete: {{ name }}{% endblocktranslate %}{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-md-7 col-lg-6">
     <div class="card border-danger">
       <div class="card-header bg-danger text-white fw-semibold">
-        <i class="bi bi-trash me-2"></i>Delete configuration: {{ peer.name }}
+        <i class="bi bi-trash me-2"></i>{% blocktranslate with name=peer.name %}Delete configuration: {{ name }}{% endblocktranslate %}
       </div>
       <div class="card-body">
-        <p>Are you sure you want to delete <strong>{{ peer.name }}</strong>?</p>
+        <p>{% blocktranslate with name=peer.name %}Are you sure you want to delete <strong>{{ name }}</strong>?{% endblocktranslate %}</p>
         <ul>
-          <li>The peer will be removed from the WireGuard interface immediately.</li>
-          <li>All configuration data will be permanently deleted.</li>
-          <li>This cannot be undone.</li>
+          <li>{% trans "The peer will be removed from the WireGuard interface immediately." %}</li>
+          <li>{% trans "All configuration data will be permanently deleted." %}</li>
+          <li>{% trans "This cannot be undone." %}</li>
         </ul>
         <dl class="row mb-0">
-          <dt class="col-4">Assigned IP</dt>
+          <dt class="col-4">{% trans "Assigned IP" %}</dt>
           <dd class="col-8 mono">{{ peer.allowed_ips }}</dd>
-          <dt class="col-4">Owner</dt>
+          <dt class="col-4">{% trans "Owner" %}</dt>
           <dd class="col-8">{{ peer.owner.email }}</dd>
         </dl>
       </div>
       <div class="card-footer d-flex justify-content-end gap-2">
-        <a href="{% url 'peer_detail' peer.pk %}" class="btn btn-outline-secondary">Cancel</a>
+        <a href="{% url 'peer_detail' peer.pk %}" class="btn btn-outline-secondary">{% trans "Cancel" %}</a>
         <form method="post">
           {% csrf_token %}
           <button type="submit" class="btn btn-danger">
-            <i class="bi bi-trash me-1"></i>Yes, delete permanently
+            <i class="bi bi-trash me-1"></i>{% trans "Yes, delete permanently" %}
           </button>
         </form>
       </div>

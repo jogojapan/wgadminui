@@ -6,6 +6,9 @@ urlpatterns = [
     # Dashboard home
     path("", views.DashboardView.as_view(), name="dashboard"),
 
+    # Language switching
+    path("set-language/", views.LanguageSetView.as_view(), name="set_language"),
+
     # Peer management
     path("peers/new/", views.PeerCreateView.as_view(), name="peer_create"),
     path("peers/<uuid:pk>/", views.PeerDetailView.as_view(), name="peer_detail"),

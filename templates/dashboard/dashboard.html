@@ -1,21 +1,22 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% load humanize %}
 
-{% block title %}Dashboard{% endblock %}
+{% block title %}{% trans "Dashboard" %}{% endblock %}
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
-  <h2><i class="bi bi-grid-fill me-2"></i>Dashboard</h2>
+  <h2><i class="bi bi-grid-fill me-2"></i>{% trans "Dashboard" %}</h2>
   <a href="{% url 'peer_create' %}" class="btn btn-primary">
-    <i class="bi bi-plus-lg me-1"></i>New configuration
+    <i class="bi bi-plus-lg me-1"></i>{% trans "New configuration" %}
   </a>
 </div>
 
 {% if not interface %}
   <div class="alert alert-warning">
     <i class="bi bi-exclamation-triangle me-1"></i>
-    No WireGuard interface has been configured yet.
-    Please add one via the <a href="{% url 'admin:wireguard_wireguardinterface_add' %}">Django admin</a>.
+    {% url 'admin:wireguard_wireguardinterface_add' as admin_add_url %}
+    {% blocktranslate %}No WireGuard interface has been configured yet. Please add one via the <a href="{{ admin_add_url }}">Django admin</a>.{% endblocktranslate %}
   </div>
 {% else %}
 
@@ -25,19 +26,19 @@
       <span class="fw-semibold"><i class="bi bi-hdd-network me-1"></i>{{ interface.name }}</span>
       {% if interface_info.running %}
         <span class="status-badge status-online">
-          <span class="status-dot"></span>Running
+          <span class="status-dot"></span>{% trans "Running" %}
         </span>
       {% else %}
         <span class="status-badge status-never">
-          <span class="status-dot"></span>Down
+          <span class="status-dot"></span>{% trans "Down" %}
         </span>
       {% endif %}
       {% if interface_info.listen_port %}
-        <span class="text-muted small">Port {{ interface_info.listen_port }}</span>
+        <span class="text-muted small">{% trans "Port" %} {{ interface_info.listen_port }}</span>
       {% endif %}
       {% if user.is_admin_user %}
         <a href="{% url 'interface_status' %}" class="ms-auto btn btn-sm btn-outline-secondary">
-          <i class="bi bi-activity me-1"></i>Full status
+          <i class="bi bi-activity me-1"></i>{% trans "Full status" %}
         </a>
       {% endif %}
     </div>
@@ -64,29 +65,29 @@
               {% if s %}
                 {% if s.online %}
                   <span class="status-badge status-online">
-                    <span class="status-dot"></span>Online
+                    <span class="status-dot"></span>{% trans "Online" %}
                   </span>
                 {% elif s.last_handshake %}
                   <span class="status-badge status-offline">
                     <span class="status-dot"></span>
-                    Last seen {{ s.last_seen_ago_s|floatformat:0 }}s ago
+                    {% blocktranslate with ago=s.last_seen_ago_s|floatformat:0 %}Last seen {{ ago }}s ago{% endblocktranslate %}
                   </span>
                 {% else %}
                   <span class="status-badge status-never">
-                    <span class="status-dot"></span>Never connected
+                    <span class="status-dot"></span>{% trans "Never connected" %}
                   </span>
                 {% endif %}
               {% else %}
-                <span class="text-muted small">No status data</span>
+                <span class="text-muted small">{% trans "No status data" %}</span>
               {% endif %}
             </div>
             <div class="card-footer bg-transparent d-flex gap-2">
               <a href="{% url 'peer_detail' peer.pk %}" class="btn btn-sm btn-outline-primary">
-                <i class="bi bi-eye me-1"></i>Details
+                <i class="bi bi-eye me-1"></i>{% trans "Details" %}
               </a>
               {% if not peer.setup_acknowledged %}
                 <a href="{% url 'peer_setup' peer.pk %}" class="btn btn-sm btn-warning">
-                  <i class="bi bi-exclamation-triangle me-1"></i>Setup pending
+                  <i class="bi bi-exclamation-triangle me-1"></i>{% trans "Setup pending" %}
                 </a>
               {% endif %}
             </div>
@@ -98,8 +99,8 @@
   {% else %}
     <div class="empty-state">
       <i class="bi bi-plug"></i>
-      <p>You have no WireGuard configurations yet.</p>
-      <a href="{% url 'peer_create' %}" class="btn btn-primary">Create your first configuration</a>
+      <p>{% trans "You have no WireGuard configurations yet." %}</p>
+      <a href="{% url 'peer_create' %}" class="btn btn-primary">{% trans "Create your first configuration" %}</a>
     </div>
   {% endif %}
 {% endif %}

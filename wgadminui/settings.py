@@ -62,6 +62,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -82,6 +83,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "django.template.context_processors.i18n",
                 "wgadminui.context_processors.site_info",
             ],
         },
@@ -131,7 +133,8 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_USER_MODEL_USERNAME_FIELD = "username"
 ACCOUNT_LOGIN_BY_CODE_ENABLED = True
 # Use the invitations adapter so django-invitations can hook into allauth signals
-ACCOUNT_ADAPTER = "invitations.models.InvitationsAdapter"
+ACCOUNT_ADAPTER = "accounts.adapter.LanguageAwareInvitationsAdapter"
+INVITATIONS_ADAPTER = "accounts.adapter.LanguageAwareInvitationsAdapter"
 
 # Passkeys / WebAuthn
 MFA_SUPPORTED_TYPES = ["totp", "webauthn", "recovery_codes"]
@@ -220,10 +223,22 @@ if not DEBUG:
 # Internationalisation
 # ---------------------------------------------------------------------------
 
-LANGUAGE_CODE = "en-us"
+from django.utils.translation import gettext_lazy as _
+
+LANGUAGE_CODE = "en"
 TIME_ZONE = config("WGADMINUI_TIME_ZONE", default="UTC")
 USE_I18N = True
 USE_TZ = True
+
+LANGUAGES = [
+    ("en", _("English")),
+    ("de", _("German")),
+    ("ja", _("Japanese")),
+]
+
+LOCALE_PATHS = [BASE_DIR / "locale"]
+
+LANGUAGE_COOKIE_NAME = "wgadminui_language"
 
 # ---------------------------------------------------------------------------
 # Logging

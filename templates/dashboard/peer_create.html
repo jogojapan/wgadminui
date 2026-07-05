@@ -1,18 +1,17 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}New configuration{% endblock %}
+{% block title %}{% trans "New configuration" %}{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-md-8 col-lg-6">
-    <h2 class="mb-4"><i class="bi bi-plus-circle me-2"></i>New WireGuard configuration</h2>
+    <h2 class="mb-4"><i class="bi bi-plus-circle me-2"></i>{% trans "New WireGuard configuration" %}</h2>
 
     <div class="card">
       <div class="card-body">
         <p class="text-muted mb-4">
-          A new keypair will be generated for you. On the next page you will
-          be shown the private key and QR code <strong>exactly once</strong> —
-          please save them immediately.
+          {% trans "A new keypair will be generated for you. On the next page you will be shown the private key and QR code <strong>exactly once</strong> — please save them immediately." %}
         </p>
 
         <form method="post" novalidate>
@@ -40,9 +39,9 @@
           {% endfor %}
 
           <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-            <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">Cancel</a>
+            <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">{% trans "Cancel" %}</a>
             <button type="submit" class="btn btn-primary">
-              <i class="bi bi-key-fill me-1"></i>Generate &amp; create
+              <i class="bi bi-key-fill me-1"></i>{% trans "Generate &amp; create" %}
             </button>
           </div>
         </form>

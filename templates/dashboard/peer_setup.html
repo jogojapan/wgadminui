@@ -1,20 +1,18 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Setup: {{ peer.name }}{% endblock %}
+{% block title %}{% blocktranslate with name=peer.name %}Setup: {{ name }}{% endblocktranslate %}{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-md-9 col-lg-8">
 
-    <h2 class="mb-3"><i class="bi bi-phone me-2"></i>Setup: {{ peer.name }}</h2>
+    <h2 class="mb-3"><i class="bi bi-phone me-2"></i>{% blocktranslate with name=peer.name %}Setup: {{ name }}{% endblocktranslate %}</h2>
 
     <div class="warning-box mb-4">
-      <h5 class="mb-2"><i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>Save this now!</h5>
+      <h5 class="mb-2"><i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>{% trans "Save this now!" %}</h5>
       <p class="mb-0">
-        This is the <strong>only time</strong> the private key and QR code will be shown.
-        After you click <em>"I have saved my configuration"</em>, the key is permanently
-        discarded and cannot be recovered. If you lose it, use <em>Regenerate keypair</em>
-        to create a new one.
+        {% trans "This is the <strong>only time</strong> the private key and QR code will be shown. After you click <em>\"I have saved my configuration\"</em>, the key is permanently discarded and cannot be recovered. If you lose it, use <em>Regenerate keypair</em> to create a new one." %}
       </p>
     </div>
 
@@ -22,21 +20,21 @@
 
       {# QR code column #}
       <div class="col-md-6 text-center">
-        <p class="fw-semibold mb-2">Scan with your WireGuard app</p>
+        <p class="fw-semibold mb-2">{% trans "Scan with your WireGuard app" %}</p>
         <img src="{{ setup.qr_data_uri }}"
-             alt="WireGuard QR code for {{ peer.name }}"
+             alt="{% blocktranslate with name=peer.name %}WireGuard QR code for {{ name }}{% endblocktranslate %}"
              class="img-fluid border rounded p-2"
              style="max-width: 280px;">
       </div>
 
       {# Config text column #}
       <div class="col-md-6">
-        <p class="fw-semibold mb-2">Or copy the configuration file</p>
+        <p class="fw-semibold mb-2">{% trans "Or copy the configuration file" %}</p>
         <div class="position-relative">
           <textarea id="confText" class="form-control mono"
                     rows="14" readonly>{{ setup.conf_text }}</textarea>
           <button class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-1"
-                  onclick="copyConf()" title="Copy to clipboard">
+                  onclick="copyConf()" title="{% trans "Copy to clipboard" %}">
             <i class="bi bi-clipboard"></i>
           </button>
         </div>
@@ -47,8 +45,8 @@
     <div class="card border-success">
       <div class="card-body">
         <p class="mb-3">
-          <strong>Assigned IP:</strong> <code>{{ peer.allowed_ips }}</code><br>
-          <strong>Server endpoint:</strong>
+          <strong>{% trans "Assigned IP:" %}</strong> <code>{{ peer.allowed_ips }}</code><br>
+          <strong>{% trans "Server endpoint:" %}</strong>
           <code>{{ peer.interface.server_endpoint_host }}:{{ peer.interface.listen_port }}</code>
         </p>
         <form method="post">
@@ -56,11 +54,11 @@
           <div class="form-check mb-3">
             <input class="form-check-input" type="checkbox" id="confirmSaved" required>
             <label class="form-check-label fw-semibold" for="confirmSaved">
-              I have saved the QR code or configuration file on my device.
+              {% trans "I have saved the QR code or configuration file on my device." %}
             </label>
           </div>
           <button type="submit" class="btn btn-success" id="ackBtn" disabled>
-            <i class="bi bi-check-circle me-1"></i>I have saved my configuration
+            <i class="bi bi-check-circle me-1"></i>{% trans "I have saved my configuration" %}
           </button>
         </form>
       </div>

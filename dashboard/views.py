@@ -8,6 +8,7 @@ Access control:
 
 import datetime
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -16,6 +17,8 @@ from django.core.exceptions import PermissionDenied
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
+from django.utils import translation
+from django.utils.translation import gettext as _
 from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
 
@@ -44,6 +47,27 @@ class AdminRequiredMixin(LoginRequiredMixin):
         if not request.user.is_admin_user:
             raise PermissionDenied
         return super().dispatch(request, *args, **kwargs)
+
+
+# ---------------------------------------------------------------------------
+# Language switching
+# ---------------------------------------------------------------------------
+
+
+class LanguageSetView(LoginRequiredMixin, View):
+    """POST-only view that persists the user's language choice."""
+
+    def post(self, request):
+        language = request.POST.get("language")
+        valid_langs = dict(settings.LANGUAGES)
+        if language in valid_langs:
+            request.user.language = language
+            request.user.save(update_fields=["language"])
+            translation.activate(language)
+            request.session[translation.LANGUAGE_SESSION_KEY] = language
+        # Redirect back to the referring page, or dashboard as fallback
+        next_url = request.META.get("HTTP_REFERER", "/")
+        return redirect(next_url)
 
 
 def _get_default_interface():
@@ -95,7 +119,7 @@ class PeerCreateView(LoginRequiredMixin, View):
     def get_interface(self):
         interface = _get_default_interface()
         if interface is None:
-            raise Http404("No WireGuard interface configured.")
+            raise Http404(_("No WireGuard interface configured."))
         return interface
 
     def get(self, request):
@@ -120,7 +144,7 @@ class PeerCreateView(LoginRequiredMixin, View):
             form.add_error(None, str(exc))
             return render(request, self.template_name, {"form": form, "interface": interface})
         except Exception as exc:
-            messages.error(request, f"Failed to create peer: {exc}")
+            messages.error(request, _("Failed to create peer: %s") % exc)
             return render(request, self.template_name, {"form": form, "interface": interface})
 
         # Store conf_text + private_key in session for the one-time setup page
@@ -154,8 +178,8 @@ class PeerSetupView(LoginRequiredMixin, View):
             # Session expired or wrong peer — key is gone
             messages.warning(
                 request,
-                "The private key for this configuration is no longer available. "
-                "You can regenerate the keypair to get a new one.",
+                _("The private key for this configuration is no longer available. "
+                  "You can regenerate the keypair to get a new one."),
             )
             return redirect("peer_detail", pk=peer.id)
         return render(request, self.template_name, {"peer": peer, "setup": setup_data})
@@ -167,7 +191,7 @@ class PeerSetupView(LoginRequiredMixin, View):
         peer.save(update_fields=["setup_acknowledged"])
         # Clear session data
         request.session.pop("peer_setup", None)
-        messages.success(request, f"Configuration for '{peer.name}' is ready.")
+        messages.success(request, _("Configuration for '%s' is ready.") % peer.name)
         return redirect("peer_detail", pk=peer.id)
 
 
@@ -215,8 +239,8 @@ def peer_qr_view(request, pk):
         qr_data_uri = setup_data["qr_data_uri"]
     else:
         return HttpResponse(
-            '<p class="text-muted small">QR code unavailable — private key no longer stored. '
-            'Use "Regenerate keypair" to create a new one.</p>'
+            _('<p class="text-muted small">QR code unavailable — private key no longer stored. '
+              'Use "Regenerate keypair" to create a new one.</p>')
         )
 
     return render(request, "dashboard/partials/qr_fragment.html", {"qr_data_uri": qr_data_uri, "peer": peer})
@@ -245,7 +269,7 @@ class PeerRegenerateView(LoginRequiredMixin, View):
         try:
             private_key, conf_text = wg_services.regenerate_peer_keypair(peer)
         except Exception as exc:
-            messages.error(request, f"Failed to regenerate keypair: {exc}")
+            messages.error(request, _("Failed to regenerate keypair: %s") % exc)
             return redirect("peer_detail", pk=peer.id)
 
         request.session["peer_setup"] = {
@@ -280,9 +304,9 @@ class PeerDeleteView(LoginRequiredMixin, View):
         name = peer.name
         try:
             wg_services.delete_peer(peer)
-            messages.success(request, f"Peer '{name}' deleted.")
+            messages.success(request, _("Peer '%s' deleted.") % name)
         except Exception as exc:
-            messages.error(request, f"Error deleting peer: {exc}")
+            messages.error(request, _("Error deleting peer: %s") % exc)
         return redirect("dashboard")
 
 
@@ -301,18 +325,19 @@ class AdminUsersView(AdminRequiredMixin, View):
 
     def post(self, request):
         email = request.POST.get("email", "").strip().lower()
+        language = request.POST.get("language", settings.LANGUAGE_CODE)
         if not email:
-            messages.error(request, "Please provide an email address.")
+            messages.error(request, _("Please provide an email address."))
             return redirect("admin_users")
         if User.objects.filter(email=email).exists():
-            messages.warning(request, f"{email} is already a registered user.")
+            messages.warning(request, _("%s is already a registered user.") % email)
             return redirect("admin_users")
         if Invitation.objects.filter(email=email, accepted=False).exists():
-            messages.warning(request, f"An invitation is already pending for {email}.")
+            messages.warning(request, _("An invitation is already pending for %s.") % email)
             return redirect("admin_users")
         invite = Invitation.create(email=email, inviter=request.user)
-        invite.send_invitation(request)
-        messages.success(request, f"Invitation sent to {email}.")
+        invite.send_invitation(request, extra_context={"language": language})
+        messages.success(request, _("Invitation sent to %s.") % email)
         return redirect("admin_users")
 
 

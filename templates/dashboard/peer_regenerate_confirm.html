@@ -1,33 +1,33 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Regenerate keypair: {{ peer.name }}{% endblock %}
+{% block title %}{% blocktranslate with name=peer.name %}Regenerate keypair: {{ name }}{% endblocktranslate %}{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-md-7 col-lg-6">
     <div class="card border-warning">
       <div class="card-header bg-warning text-dark fw-semibold">
-        <i class="bi bi-arrow-repeat me-2"></i>Regenerate keypair for {{ peer.name }}
+        <i class="bi bi-arrow-repeat me-2"></i>{% blocktranslate with name=peer.name %}Regenerate keypair for {{ name }}{% endblocktranslate %}
       </div>
       <div class="card-body">
-        <p>This will:</p>
+        <p>{% trans "This will:" %}</p>
         <ul>
-          <li>Generate a new private/public keypair.</li>
-          <li>Replace the existing peer on the WireGuard server immediately.</li>
-          <li>Show you the new private key and QR code <strong>exactly once</strong>.</li>
+          <li>{% trans "Generate a new private/public keypair." %}</li>
+          <li>{% trans "Replace the existing peer on the WireGuard server immediately." %}</li>
+          <li>{% trans "Show you the new private key and QR code <strong>exactly once</strong>." %}</li>
         </ul>
         <p class="text-danger mb-0">
           <i class="bi bi-exclamation-triangle me-1"></i>
-          Any device currently using the old configuration <strong>will be disconnected</strong>
-          until reconfigured with the new key.
+          {% trans "Any device currently using the old configuration <strong>will be disconnected</strong> until reconfigured with the new key." %}
         </p>
       </div>
       <div class="card-footer d-flex justify-content-end gap-2">
-        <a href="{% url 'peer_detail' peer.pk %}" class="btn btn-outline-secondary">Cancel</a>
+        <a href="{% url 'peer_detail' peer.pk %}" class="btn btn-outline-secondary">{% trans "Cancel" %}</a>
         <form method="post">
           {% csrf_token %}
           <button type="submit" class="btn btn-warning">
-            <i class="bi bi-arrow-repeat me-1"></i>Yes, regenerate keypair
+            <i class="bi bi-arrow-repeat me-1"></i>{% trans "Yes, regenerate keypair" %}
           </button>
         </form>
       </div>
