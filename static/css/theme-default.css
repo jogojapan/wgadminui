@@ -1,0 +1,25 @@
+/*
+ * theme-default.css — Default theme entry point
+ *
+ * This is the ONLY file loaded in base.html.
+ * To create a new theme, create theme-<name>.css and import
+ * a different variables.css (or override vars inline) followed
+ * by the same module imports below.
+ *
+ * Module load order matters:
+ *   1. variables  — design tokens (must be first)
+ *   2. base       — global resets / typography
+ *   3. nav        — navbar
+ *   4. cards      — peer cards and data cards
+ *   5. forms      — inputs, labels, buttons
+ *   6. badges     — status indicators
+ *   7. layout     — tables, footer, structural helpers
+ */
+
+@import "variables.css";
+@import "base.css";
+@import "nav.css";
+@import "cards.css";
+@import "forms.css";
+@import "badges.css";
+@import "layout.css";

@@ -1,0 +1,145 @@
+/*
+ * cards.css — Peer cards and data cards
+ *
+ * Peer cards on the dashboard get a status-coloured left border
+ * and a smooth lift on hover. General data cards get subtle
+ * refinements (header accent, tighter padding).
+ */
+
+/* ── Peer card ───────────────────────────────────────────── */
+
+.peer-card {
+  border: 1px solid var(--wg-border);
+  border-radius: var(--wg-radius);
+  background: var(--wg-surface);
+  box-shadow: var(--wg-shadow-sm);
+  transition: box-shadow var(--wg-transition-med),
+              transform var(--wg-transition-med),
+              border-color var(--wg-transition-med);
+  overflow: hidden;            /* so the left-border accent clips properly */
+  position: relative;
+}
+
+.peer-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--wg-border-strong);  /* default: neutral */
+  border-radius: var(--wg-radius) 0 0 var(--wg-radius);
+  transition: background var(--wg-transition-med);
+}
+
+/* Colour the accent stripe based on peer status */
+.peer-card.peer-online::before    { background: var(--wg-online); }
+.peer-card.peer-offline::before   { background: var(--wg-offline); }
+.peer-card.peer-never::before     { background: var(--wg-never); }
+.peer-card.peer-pending::before   { background: #F59E0B; }  /* setup pending */
+
+.peer-card:hover {
+  box-shadow: var(--wg-shadow-hover);
+  transform: translateY(-2px);
+  border-color: var(--wg-border-strong);
+}
+
+.peer-card .card-body {
+  padding: 1.1rem 1.1rem 0.75rem 1.35rem;  /* extra left to clear the stripe */
+}
+
+.peer-card .card-footer {
+  padding: 0.6rem 1.1rem 0.6rem 1.35rem;
+}
+
+/* Card title */
+.peer-card .card-title {
+  font-size: 0.975rem;
+  font-weight: 600;
+  color: var(--wg-text);
+  margin-bottom: 0.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.peer-card .card-title .bi {
+  color: var(--wg-text-muted);
+  font-size: 0.95em;
+}
+
+/* Owner line */
+.peer-card .peer-owner {
+  font-size: 0.8rem;
+  color: var(--wg-text-muted);
+  margin-bottom: 0.5rem;
+}
+
+/* IP address */
+.peer-card .peer-ip {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo,
+               Courier, monospace;
+  font-size: 0.78rem;
+  color: var(--wg-text-muted);
+  background: var(--wg-surface-subtle);
+  border: 1px solid var(--wg-border);
+  border-radius: var(--wg-radius-sm);
+  padding: 0.15em 0.5em;
+  display: inline-block;
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.02em;
+}
+
+/* ── Interface status strip ──────────────────────────────── */
+
+.interface-strip {
+  background: var(--wg-surface-subtle) !important;
+  border: 1px solid var(--wg-border) !important;
+  border-radius: var(--wg-radius) !important;
+}
+
+.interface-strip .card-body {
+  padding: 0.6rem 1.1rem;
+}
+
+/* ── General info cards (detail pages) ───────────────────── */
+
+.card .card-header h5,
+.card .card-header h6 {
+  margin-bottom: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--wg-text-muted);
+}
+
+/* Key-value rows inside cards */
+.card dl.row dt {
+  font-weight: 500;
+  color: var(--wg-text-muted);
+  font-size: 0.85rem;
+}
+
+.card dl.row dd {
+  color: var(--wg-text);
+  font-size: 0.9rem;
+}
+
+/* ── Empty state ─────────────────────────────────────────── */
+
+.empty-state {
+  padding: 4rem 1rem;
+  text-align: center;
+  color: var(--wg-text-muted);
+}
+
+.empty-state .bi {
+  color: var(--wg-border-strong);
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.empty-state p {
+  font-size: 1rem;
+  margin-bottom: 1.25rem;
+}

@@ -69,21 +69,21 @@
                 <td>
                   {{ u.email }}
                   {% if u == request.user %}
-                    <span class="badge bg-secondary ms-1">you</span>
+                    <span class="badge-you ms-1">you</span>
                   {% endif %}
                 </td>
                 <td>
                   {% if u.is_admin_user %}
-                    <span class="badge bg-primary">Admin</span>
+                    <span class="badge-role-admin">Admin</span>
                   {% else %}
-                    <span class="badge bg-light text-dark border">Member</span>
+                    <span class="badge-role-member">Member</span>
                   {% endif %}
                 </td>
                 <td>
                   {% if u.is_active %}
-                    <span class="text-success small"><i class="bi bi-check-circle me-1"></i>Active</span>
+                    <span class="status-badge status-online"><span class="status-dot"></span>Active</span>
                   {% else %}
-                    <span class="text-danger small"><i class="bi bi-x-circle me-1"></i>Inactive</span>
+                    <span class="status-badge status-never"><span class="status-dot"></span>Inactive</span>
                   {% endif %}
                 </td>
                 <td class="text-muted small">{{ u.date_joined|date:"Y-m-d" }}</td>

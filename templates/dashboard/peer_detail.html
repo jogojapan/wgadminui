@@ -69,14 +69,13 @@
             <dt class="col-5">Connection</dt>
             <dd class="col-7">
               {% if live_status.online %}
-                <span class="status-online"><i class="bi bi-wifi me-1"></i>Online</span>
+                <span class="status-badge status-online"><span class="status-dot"></span>Online</span>
               {% elif live_status.last_handshake %}
-                <span class="status-offline">
-                  <i class="bi bi-wifi-off me-1"></i>
-                  Offline ({{ live_status.last_seen_ago_s|floatformat:0 }}s ago)
+                <span class="status-badge status-offline">
+                  <span class="status-dot"></span>Offline ({{ live_status.last_seen_ago_s|floatformat:0 }}s ago)
                 </span>
               {% else %}
-                <span class="status-never"><i class="bi bi-question-circle me-1"></i>Never connected</span>
+                <span class="status-badge status-never"><span class="status-dot"></span>Never connected</span>
               {% endif %}
             </dd>
 

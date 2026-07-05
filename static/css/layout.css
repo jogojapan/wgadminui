@@ -1,0 +1,196 @@
+/*
+ * layout.css — Page structure, footer, tables, flash messages
+ */
+
+/* ── Main container ──────────────────────────────────────── */
+
+main.container {
+  max-width: 1100px;
+}
+
+/* ── Page section headings ───────────────────────────────── */
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.page-header h2 {
+  margin-bottom: 0;
+}
+
+/* ── Flash messages (Bootstrap alerts) ───────────────────── */
+
+.alert {
+  border-radius: var(--wg-radius);
+  border-left-width: 4px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.alert .btn-close {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* ── Tables ──────────────────────────────────────────────── */
+
+.table {
+  font-size: 0.9rem;
+  color: var(--wg-text);
+  border-color: var(--wg-border);
+}
+
+.table thead th {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--wg-text-muted);
+  background: var(--wg-surface-subtle);
+  border-bottom: 2px solid var(--wg-border);
+  padding: 0.65rem 0.85rem;
+  white-space: nowrap;
+}
+
+.table tbody td {
+  padding: 0.7rem 0.85rem;
+  vertical-align: middle;
+  border-color: var(--wg-border);
+}
+
+.table tbody tr:hover td {
+  background: var(--wg-surface-subtle);
+}
+
+.table-responsive {
+  border: 1px solid var(--wg-border);
+  border-radius: var(--wg-radius);
+  overflow: hidden;
+}
+
+.table-responsive .table {
+  margin-bottom: 0;
+}
+
+/* ── Section divider ─────────────────────────────────────── */
+
+.section-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--wg-text-muted);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--wg-border);
+}
+
+/* ── Invite / pending list ───────────────────────────────── */
+
+.pending-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pending-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--wg-border);
+  border-radius: var(--wg-radius-sm);
+  margin-bottom: 0.4rem;
+  background: var(--wg-surface);
+  font-size: 0.88rem;
+}
+
+.pending-list li .text-muted {
+  font-size: 0.78rem;
+}
+
+/* ── Footer ──────────────────────────────────────────────── */
+
+footer {
+  margin-top: 4rem;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--wg-border) !important;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--wg-text-faint);
+  letter-spacing: 0.02em;
+}
+
+/* ── Scrollbar (Webkit) ───────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--wg-body-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--wg-border-strong);
+  border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--wg-text-faint);
+}
+
+/* ── QR code container ───────────────────────────────────── */
+
+.qr-wrapper {
+  display: inline-block;
+  padding: 1rem;
+  background: #fff;  /* QR codes always need a white bg */
+  border: 1px solid var(--wg-border);
+  border-radius: var(--wg-radius);
+  box-shadow: var(--wg-shadow-sm);
+}
+
+/* ── Confirmation / danger panels ────────────────────────── */
+
+.confirm-panel {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.consequence-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem;
+}
+
+.consequence-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.35rem 0;
+  font-size: 0.9rem;
+  color: var(--wg-text);
+}
+
+.consequence-list li .bi {
+  flex-shrink: 0;
+  margin-top: 0.1em;
+  color: var(--wg-never);
+}

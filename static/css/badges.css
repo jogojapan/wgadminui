@@ -1,0 +1,150 @@
+/*
+ * badges.css — Status indicators and badges
+ *
+ * Replaces the plain coloured text used for online/offline/never
+ * with pill badges with animated dots. Also styles the role badges
+ * (Admin / Member) on the users admin page.
+ */
+
+/* ── Base status badge ───────────────────────────────────── */
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.2em 0.65em;
+  border-radius: 99px;
+  line-height: 1.4;
+}
+
+/* ── Online ──────────────────────────────────────────────── */
+
+.status-online,
+.status-badge.status-online {
+  color: var(--wg-online);
+  background: var(--wg-online-bg);
+  border: 1px solid #86EFAC;
+}
+
+/* Pulsing dot for online peers */
+.status-online .status-dot,
+.status-badge.status-online .status-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--wg-online);
+  animation: pulse-green 2s infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pulse-green {
+  0%, 100% { box-shadow: 0 0 0 0   rgba(22, 163, 74, 0.6); }
+  50%       { box-shadow: 0 0 0 5px rgba(22, 163, 74, 0.0); }
+}
+
+/* ── Offline ─────────────────────────────────────────────── */
+
+.status-offline,
+.status-badge.status-offline {
+  color: var(--wg-offline);
+  background: var(--wg-offline-bg);
+  border: 1px solid #D1D5DB;
+}
+
+.status-offline .status-dot,
+.status-badge.status-offline .status-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--wg-offline);
+  flex-shrink: 0;
+}
+
+/* ── Never connected ─────────────────────────────────────── */
+
+.status-never,
+.status-badge.status-never {
+  color: var(--wg-never);
+  background: var(--wg-never-bg);
+  border: 1px solid #FCA5A5;
+}
+
+.status-never .status-dot,
+.status-badge.status-never .status-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--wg-never);
+  flex-shrink: 0;
+}
+
+/* ── Bootstrap badge overrides ───────────────────────────── */
+
+.badge {
+  font-weight: 500;
+  font-size: 0.75rem;
+  padding: 0.3em 0.65em;
+  border-radius: 99px;
+  letter-spacing: 0.02em;
+}
+
+.badge.bg-success {
+  background-color: var(--wg-online-bg) !important;
+  color: var(--wg-online) !important;
+  border: 1px solid #86EFAC;
+}
+
+.badge.bg-danger {
+  background-color: var(--wg-never-bg) !important;
+  color: var(--wg-never) !important;
+  border: 1px solid #FCA5A5;
+}
+
+.badge.bg-secondary {
+  background-color: var(--wg-offline-bg) !important;
+  color: var(--wg-offline) !important;
+  border: 1px solid #D1D5DB;
+}
+
+/* ── Role badges (admin users page) ──────────────────────── */
+
+.badge-role-admin {
+  background: var(--wg-accent-light);
+  color: var(--wg-accent);
+  border: 1px solid rgba(var(--wg-accent-rgb), 0.3);
+  font-weight: 600;
+  font-size: 0.72rem;
+  padding: 0.25em 0.65em;
+  border-radius: 99px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-role-member {
+  background: var(--wg-offline-bg);
+  color: var(--wg-offline);
+  border: 1px solid #D1D5DB;
+  font-size: 0.72rem;
+  padding: 0.25em 0.65em;
+  border-radius: 99px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ── "You" badge ─────────────────────────────────────────── */
+
+.badge-you {
+  background: var(--wg-accent-light);
+  color: var(--wg-accent);
+  border: 1px solid rgba(var(--wg-accent-rgb), 0.25);
+  font-size: 0.68rem;
+  padding: 0.2em 0.55em;
+  border-radius: 99px;
+  vertical-align: middle;
+  font-weight: 600;
+}

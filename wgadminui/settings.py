@@ -184,6 +184,7 @@ WGADMINUI_WG_SERVER_PORT = config("WGADMINUI_WG_SERVER_PORT", default=51820, cas
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [BASE_DIR / "static"]
 STORAGES = {
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",

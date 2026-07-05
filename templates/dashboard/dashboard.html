@@ -20,13 +20,17 @@
 {% else %}
 
   {# ── Interface status strip ── #}
-  <div class="card mb-4 border-0 bg-body-secondary">
-    <div class="card-body py-2 d-flex align-items-center gap-3 flex-wrap">
+  <div class="card interface-strip mb-4">
+    <div class="card-body d-flex align-items-center gap-3 flex-wrap">
       <span class="fw-semibold"><i class="bi bi-hdd-network me-1"></i>{{ interface.name }}</span>
       {% if interface_info.running %}
-        <span class="badge bg-success"><i class="bi bi-circle-fill me-1"></i>Running</span>
+        <span class="status-badge status-online">
+          <span class="status-dot"></span>Running
+        </span>
       {% else %}
-        <span class="badge bg-danger"><i class="bi bi-circle-fill me-1"></i>Down</span>
+        <span class="status-badge status-never">
+          <span class="status-dot"></span>Down
+        </span>
       {% endif %}
       {% if interface_info.listen_port %}
         <span class="text-muted small">Port {{ interface_info.listen_port }}</span>
@@ -43,37 +47,38 @@
   {% if peers %}
     <div class="row g-3">
       {% for peer in peers %}
+        {% with s=peer.live_status %}
         <div class="col-md-6 col-xl-4">
-          <div class="card peer-card h-100">
+          <div class="card peer-card h-100{% if not peer.setup_acknowledged %} peer-pending{% elif s and s.online %} peer-online{% elif s and s.last_handshake %} peer-offline{% elif s %} peer-never{% endif %}">
             <div class="card-body">
               <h5 class="card-title mb-1">
-                <i class="bi bi-laptop me-1 text-muted"></i>{{ peer.name }}
+                <i class="bi bi-laptop"></i>{{ peer.name }}
               </h5>
               {% if user.is_admin_user and peer.owner != user %}
-                <div class="text-muted small mb-2">
+                <div class="peer-owner mb-1">
                   <i class="bi bi-person me-1"></i>{{ peer.owner.email }}
                 </div>
               {% endif %}
-              <div class="mono text-muted small mb-2">{{ peer.allowed_ips }}</div>
+              <div class="peer-ip mb-2">{{ peer.allowed_ips }}</div>
 
-              {% with s=peer.live_status %}
-                {% if s %}
-                  {% if s.online %}
-                    <span class="status-online small"><i class="bi bi-wifi me-1"></i>Online</span>
-                  {% elif s.last_handshake %}
-                    <span class="status-offline small">
-                      <i class="bi bi-wifi-off me-1"></i>
-                      Last seen {{ s.last_seen_ago_s|floatformat:0 }}s ago
-                    </span>
-                  {% else %}
-                    <span class="status-never small">
-                      <i class="bi bi-question-circle me-1"></i>Never connected
-                    </span>
-                  {% endif %}
+              {% if s %}
+                {% if s.online %}
+                  <span class="status-badge status-online">
+                    <span class="status-dot"></span>Online
+                  </span>
+                {% elif s.last_handshake %}
+                  <span class="status-badge status-offline">
+                    <span class="status-dot"></span>
+                    Last seen {{ s.last_seen_ago_s|floatformat:0 }}s ago
+                  </span>
                 {% else %}
-                  <span class="text-muted small">No status data</span>
+                  <span class="status-badge status-never">
+                    <span class="status-dot"></span>Never connected
+                  </span>
                 {% endif %}
-              {% endwith %}
+              {% else %}
+                <span class="text-muted small">No status data</span>
+              {% endif %}
             </div>
             <div class="card-footer bg-transparent d-flex gap-2">
               <a href="{% url 'peer_detail' peer.pk %}" class="btn btn-sm btn-outline-primary">
@@ -87,11 +92,12 @@
             </div>
           </div>
         </div>
+        {% endwith %}
       {% endfor %}
     </div>
   {% else %}
-    <div class="text-center text-muted py-5">
-      <i class="bi bi-plug display-4 d-block mb-3"></i>
+    <div class="empty-state">
+      <i class="bi bi-plug"></i>
       <p>You have no WireGuard configurations yet.</p>
       <a href="{% url 'peer_create' %}" class="btn btn-primary">Create your first configuration</a>
     </div>

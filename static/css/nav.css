@@ -1,0 +1,125 @@
+/*
+ * nav.css — Navbar styling
+ *
+ * Gives the fixed top navbar a branded gradient look and
+ * clear active/hover states for nav items.
+ */
+
+/* ── Navbar shell ────────────────────────────────────────── */
+
+.navbar {
+  background: linear-gradient(
+    135deg,
+    var(--wg-nav-bg-from) 0%,
+    var(--wg-nav-bg-to) 100%
+  ) !important;
+  border-bottom: 1px solid var(--wg-nav-border);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* ── Brand / logo ────────────────────────────────────────── */
+
+.navbar-brand {
+  color: var(--wg-nav-text-active) !important;
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+  padding: 0.85rem 0;
+  transition: opacity var(--wg-transition);
+}
+
+.navbar-brand:hover {
+  opacity: 0.85;
+}
+
+.navbar-brand .bi {
+  color: var(--wg-accent);
+  font-size: 1.15em;
+  filter: drop-shadow(0 0 6px rgba(var(--wg-accent-rgb), 0.55));
+}
+
+/* ── Nav links ───────────────────────────────────────────── */
+
+.navbar-nav .nav-link {
+  color: var(--wg-nav-text) !important;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.85rem 0.85rem !important;
+  border-radius: var(--wg-radius-sm);
+  margin: 0.15rem 0.1rem;
+  transition: background var(--wg-transition), color var(--wg-transition);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus {
+  color: var(--wg-nav-text-active) !important;
+  background: var(--wg-nav-item-hover);
+}
+
+.navbar-nav .nav-link.active,
+.navbar-nav .nav-item.active .nav-link {
+  color: var(--wg-nav-text-active) !important;
+  background: var(--wg-nav-item-active);
+}
+
+/* ── Dropdown ────────────────────────────────────────────── */
+
+.navbar .dropdown-menu {
+  background: var(--wg-nav-bg-to);
+  border: 1px solid var(--wg-nav-border);
+  border-radius: var(--wg-radius);
+  box-shadow: var(--wg-shadow);
+  margin-top: 0.25rem;
+  min-width: 13rem;
+}
+
+.navbar .dropdown-item {
+  color: var(--wg-nav-text);
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  transition: background var(--wg-transition), color var(--wg-transition);
+  border-radius: var(--wg-radius-sm);
+  margin: 0.1rem 0.25rem;
+  width: calc(100% - 0.5rem);
+}
+
+.navbar .dropdown-item:hover,
+.navbar .dropdown-item:focus {
+  background: var(--wg-nav-item-hover);
+  color: var(--wg-nav-text-active);
+}
+
+.navbar .dropdown-item.text-danger {
+  color: #F87171 !important;
+}
+
+.navbar .dropdown-item.text-danger:hover {
+  background: rgba(248, 113, 113, 0.12);
+  color: #FCA5A5 !important;
+}
+
+.navbar .dropdown-divider {
+  border-color: var(--wg-nav-border);
+  margin: 0.25rem 0;
+}
+
+/* ── Toggler ─────────────────────────────────────────────── */
+
+.navbar-toggler {
+  border-color: var(--wg-nav-border);
+}
+
+.navbar-toggler-icon {
+  filter: brightness(0.85);
+}
+
+/* ── Dropdown toggle caret ───────────────────────────────── */
+
+.navbar .nav-link.dropdown-toggle::after {
+  opacity: 0.6;
+}

@@ -22,9 +22,9 @@
             <dt class="col-5">Status</dt>
             <dd class="col-7">
               {% if interface_info.running %}
-                <span class="badge bg-success">Running</span>
+                <span class="status-badge status-online"><span class="status-dot"></span>Running</span>
               {% else %}
-                <span class="badge bg-danger">Down</span>
+                <span class="status-badge status-never"><span class="status-dot"></span>Down</span>
               {% endif %}
             </dd>
 
@@ -55,7 +55,7 @@
             {% endif %}
           </p>
           {% if interface_info.systemctl_output %}
-            <pre class="bg-dark text-light p-2 rounded small" style="max-height:200px;overflow:auto;">{{ interface_info.systemctl_output }}</pre>
+            <pre class="small" style="max-height:200px;">{{ interface_info.systemctl_output }}</pre>
           {% endif %}
         </div>
       </div>
@@ -95,11 +95,11 @@
               <td>
                 {% if live %}
                   {% if live.online %}
-                    <span class="status-online small"><i class="bi bi-circle-fill me-1"></i>Online</span>
+                    <span class="status-badge status-online"><span class="status-dot"></span>Online</span>
                   {% elif live.last_handshake %}
-                    <span class="status-offline small"><i class="bi bi-circle me-1"></i>Offline</span>
+                    <span class="status-badge status-offline"><span class="status-dot"></span>Offline</span>
                   {% else %}
-                    <span class="status-never small"><i class="bi bi-circle me-1"></i>Never</span>
+                    <span class="status-badge status-never"><span class="status-dot"></span>Never</span>
                   {% endif %}
                 {% else %}
                   <span class="text-muted small">—</span>
