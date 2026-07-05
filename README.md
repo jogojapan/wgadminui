@@ -57,6 +57,24 @@ $EDITOR .env        # fill in all required values
 docker network create traefik_network
 ```
 
+### 2b. Prepare the data directory (if using bind-mount in production)
+
+The docker-compose file can mount a host directory (e.g., `/fastspace/wgadminui/data`) instead of a
+named volume for persistent SQLite database storage. When using bind-mounts, the directory must exist and be
+owned by the correct user ID for the `wgadmin` user inside the container.
+
+The container runs with a **fixed UID/GID of 1000** for the `wgadmin` user, so ensure the host directory is
+pre-owned with this UID/GID:
+
+```bash
+# On the production host, if using bind-mount:
+sudo mkdir -p /fastspace/wgadminui/data
+sudo chown 1000:1000 /fastspace/wgadminui/data
+sudo chmod 750 /fastspace/wgadminui/data
+```
+
+The docker-entrypoint script will ensure ownership is correct at runtime, regardless of how the volume is mounted.
+
 ### 3. Start the container
 
 ```bash

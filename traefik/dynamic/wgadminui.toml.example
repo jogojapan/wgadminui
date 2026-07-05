@@ -34,9 +34,13 @@
 #                             otherwise.
 #                             Example: 127.0.0.1   or   wgadminui
 #
-#   <WGADMINUI_PORT>          Internal port gunicorn listens on inside the
-#                             container (or on the host in bare-metal installs).
-#                             Matches WGADMINUI_PORT in .env
+#   <WGADMINUI_BACKEND_PORT>  Port gunicorn listens on, as seen by Traefik.
+#                             • Docker network (container name as host): always 8000
+#                               (gunicorn always binds 8000 inside the container;
+#                               WGADMINUI_PORT in .env only sets the host-side
+#                               port mapping and is irrelevant here)
+#                             • Bare-metal / host-IP: use the host port you set
+#                               via WGADMINUI_PORT in .env
 #                             Default: 8000
 #
 # 3. Traefik picks up the file automatically (no reload needed) if the `file`
@@ -96,4 +100,7 @@
     [http.services.wgadminui.loadBalancer]
 
       [[http.services.wgadminui.loadBalancer.servers]]
-        url = "http://<WGADMINUI_HOST>:<WGADMINUI_PORT>"
+        # If <WGADMINUI_HOST> is the container name (Docker network access),
+        # use port 8000 — gunicorn always binds 8000 inside the container.
+        # If <WGADMINUI_HOST> is a host IP (bare-metal), use WGADMINUI_PORT from .env.
+        url = "http://<WGADMINUI_HOST>:<WGADMINUI_BACKEND_PORT>"

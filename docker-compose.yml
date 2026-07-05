@@ -52,6 +52,8 @@ services:
       # Expose on the host at WGADMINUI_PORT (default 8000).
       # Remove this section if using Traefik exclusively (no direct host port).
       - "${WGADMINUI_PORT:-8000}:8000"
+      # Note: WGADMINUI_PORT controls the HOST port only.
+      # Gunicorn always listens on port 8000 inside the container.
 
     environment:
       # ── Core Django ─────────────────────────────────────────────────────
@@ -63,8 +65,9 @@ services:
       # Include your Traefik domain and/or localhost.
       WGADMINUI_ALLOWED_HOSTS: "${WGADMINUI_ALLOWED_HOSTS:-localhost}"
 
-      # Internal port gunicorn binds to (default 8000)
-      WGADMINUI_PORT: "${WGADMINUI_PORT:-8000}"
+      # Internal port gunicorn binds to — always 8000 inside the container.
+      # WGADMINUI_PORT controls the host-side port mapping only (see ports: above).
+      WGADMINUI_PORT: "8000"
 
       # Debug mode — MUST be False in production
       WGADMINUI_DEBUG: "${WGADMINUI_DEBUG:-False}"

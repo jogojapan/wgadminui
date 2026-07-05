@@ -19,8 +19,11 @@ echo "[entrypoint] Creating initial admin user (if not exists)..."
 gosu wgadmin python manage.py create_initial_admin || true
 
 echo "[entrypoint] Starting gunicorn..."
+# Gunicorn always binds to port 8000 inside the container.
+# The host-facing port is controlled by WGADMINUI_PORT in the ports: mapping
+# in docker-compose.yml — it does not affect the internal bind address.
 exec gosu wgadmin gunicorn wgadminui.wsgi:application \
-    --bind "0.0.0.0:${WGADMINUI_PORT:-8000}" \
+    --bind "0.0.0.0:8000" \
     --workers "${WGADMINUI_GUNICORN_WORKERS:-3}" \
     --timeout "${WGADMINUI_GUNICORN_TIMEOUT:-60}" \
     --access-logfile - \
