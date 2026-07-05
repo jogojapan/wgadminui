@@ -1,0 +1,20 @@
+# Core
+Django>=6.0,<7.0
+gunicorn>=23.0
+whitenoise[brotli]>=6.9
+
+# Auth & passkeys
+django-allauth[mfa]>=65.18
+django-invitations>=2.1
+
+# WireGuard
+wireguard-tools>=0.6.0
+
+# QR codes
+segno>=1.6.6
+
+# Config from environment
+python-decouple>=3.8
+
+# Utilities
+Pillow>=11.0

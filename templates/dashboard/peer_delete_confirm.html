@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Delete: {{ peer.name }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7 col-lg-6">
+    <div class="card border-danger">
+      <div class="card-header bg-danger text-white fw-semibold">
+        <i class="bi bi-trash me-2"></i>Delete configuration: {{ peer.name }}
+      </div>
+      <div class="card-body">
+        <p>Are you sure you want to delete <strong>{{ peer.name }}</strong>?</p>
+        <ul>
+          <li>The peer will be removed from the WireGuard interface immediately.</li>
+          <li>All configuration data will be permanently deleted.</li>
+          <li>This cannot be undone.</li>
+        </ul>
+        <dl class="row mb-0">
+          <dt class="col-4">Assigned IP</dt>
+          <dd class="col-8 mono">{{ peer.allowed_ips }}</dd>
+          <dt class="col-4">Owner</dt>
+          <dd class="col-8">{{ peer.owner.email }}</dd>
+        </dl>
+      </div>
+      <div class="card-footer d-flex justify-content-end gap-2">
+        <a href="{% url 'peer_detail' peer.pk %}" class="btn btn-outline-secondary">Cancel</a>
+        <form method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">
+            <i class="bi bi-trash me-1"></i>Yes, delete permanently
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

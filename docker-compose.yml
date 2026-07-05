@@ -1,0 +1,168 @@
+# =============================================================================
+# wgadminui — docker-compose.yml
+#
+# USAGE:
+#   1. Copy .env.example to .env and edit all values.
+#   2. Run:  docker compose up -d
+#
+# TRAEFIK INTEGRATION:
+#   This compose file includes Traefik labels. Traefik must be running on the
+#   same Docker network (see networks section below). The app is accessible
+#   externally via HTTPS through Traefik; internally it listens on HTTP.
+#
+#   Adjust the following labels to match your Traefik setup:
+#     - traefik.http.routers.wgadminui.rule          (your hostname)
+#     - traefik.http.routers.wgadminui.entrypoints   (your HTTPS entrypoint name)
+#     - traefik.http.routers.wgadminui.tls.certresolver (your ACME resolver name)
+#
+# WIREGUARD ACCESS:
+#   The container needs access to the host's WireGuard configuration.
+#   /etc/wireguard is bind-mounted read-write so wgadminui can:
+#     - Read the server .conf file to parse peers
+#     - Write updated .conf files when new peers are added/removed
+#     - Run `wg` commands (requires NET_ADMIN capability, set below)
+#
+#   IMPORTANT: After adding a peer, wgadminui calls `wg syncconf` to apply
+#   changes live without restarting WireGuard. A full service restart is NOT
+#   required for new peers to become active.
+# =============================================================================
+
+services:
+  wgadminui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: wgadminui:latest
+    container_name: wgadminui
+    restart: unless-stopped
+
+    # NET_ADMIN is required to run `wg` commands (add/remove peers, show status)
+    cap_add:
+      - NET_ADMIN
+
+    volumes:
+      # WireGuard configuration directory from the host — read-write
+      # so wgadminui can update .conf files when peers change.
+      - /etc/wireguard:/etc/wireguard
+
+      # Persistent SQLite database storage
+      - wgadminui_data:/app/data
+
+    ports:
+      # Expose on the host at WGADMINUI_PORT (default 8000).
+      # Remove this section if using Traefik exclusively (no direct host port).
+      - "${WGADMINUI_PORT:-8000}:8000"
+
+    environment:
+      # ── Core Django ─────────────────────────────────────────────────────
+      # REQUIRED: Set a long random string. Generate with:
+      #   python -c "import secrets; print(secrets.token_urlsafe(50))"
+      WGADMINUI_SECRET_KEY: "${WGADMINUI_SECRET_KEY}"
+
+      # Comma-separated list of hostnames this app is served at.
+      # Include your Traefik domain and/or localhost.
+      WGADMINUI_ALLOWED_HOSTS: "${WGADMINUI_ALLOWED_HOSTS:-localhost}"
+
+      # Internal port gunicorn binds to (default 8000)
+      WGADMINUI_PORT: "${WGADMINUI_PORT:-8000}"
+
+      # Debug mode — MUST be False in production
+      WGADMINUI_DEBUG: "${WGADMINUI_DEBUG:-False}"
+
+      # Timezone for log timestamps and display (e.g. Europe/Berlin, UTC)
+      WGADMINUI_TIME_ZONE: "${WGADMINUI_TIME_ZONE:-UTC}"
+
+      # ── Initial admin account ────────────────────────────────────────────
+      # Created automatically on first startup. Change password after login.
+      WGADMINUI_ADMIN_EMAIL: "${WGADMINUI_ADMIN_EMAIL}"
+      WGADMINUI_ADMIN_PASSWORD: "${WGADMINUI_ADMIN_PASSWORD}"
+
+      # ── WireGuard ────────────────────────────────────────────────────────
+      # Interface name (the .conf file in /etc/wireguard)
+      WGADMINUI_WG_INTERFACE: "${WGADMINUI_WG_INTERFACE:-wg0}"
+
+      # Server's public IP or hostname that clients will connect to
+      WGADMINUI_WG_SERVER_PUBLIC_IP: "${WGADMINUI_WG_SERVER_PUBLIC_IP}"
+
+      # WireGuard listen port on the server (must match [Interface] ListenPort)
+      WGADMINUI_WG_SERVER_PORT: "${WGADMINUI_WG_SERVER_PORT:-51820}"
+
+      # Path inside the container to the WireGuard conf directory
+      WGADMINUI_WG_CONF_DIR: "/etc/wireguard"
+
+      # ── Email / SMTP (required for invitation and verification emails) ───
+      # Set WGADMINUI_EMAIL_BACKEND to django.core.mail.backends.smtp.EmailBackend
+      # in production. Default (console) only prints emails to stdout.
+      WGADMINUI_EMAIL_BACKEND: "${WGADMINUI_EMAIL_BACKEND:-django.core.mail.backends.console.EmailBackend}"
+      WGADMINUI_EMAIL_HOST: "${WGADMINUI_EMAIL_HOST:-localhost}"
+      WGADMINUI_EMAIL_PORT: "${WGADMINUI_EMAIL_PORT:-587}"
+      WGADMINUI_EMAIL_USER: "${WGADMINUI_EMAIL_USER:-}"
+      WGADMINUI_EMAIL_PASSWORD: "${WGADMINUI_EMAIL_PASSWORD:-}"
+      WGADMINUI_EMAIL_USE_TLS: "${WGADMINUI_EMAIL_USE_TLS:-True}"
+      WGADMINUI_EMAIL_USE_SSL: "${WGADMINUI_EMAIL_USE_SSL:-False}"
+      WGADMINUI_DEFAULT_FROM_EMAIL: "${WGADMINUI_DEFAULT_FROM_EMAIL:-noreply@example.com}"
+
+      # ── WebAuthn (passkeys) ──────────────────────────────────────────────
+      # Set to True ONLY for local HTTP development (not for production)
+      WGADMINUI_WEBAUTHN_ALLOW_INSECURE_ORIGIN: "${WGADMINUI_WEBAUTHN_ALLOW_INSECURE_ORIGIN:-False}"
+
+      # ── Gunicorn tuning ──────────────────────────────────────────────────
+      WGADMINUI_GUNICORN_WORKERS: "${WGADMINUI_GUNICORN_WORKERS:-3}"
+      WGADMINUI_GUNICORN_TIMEOUT: "${WGADMINUI_GUNICORN_TIMEOUT:-60}"
+
+      # ── Logging ─────────────────────────────────────────────────────────
+      WGADMINUI_LOG_LEVEL: "${WGADMINUI_LOG_LEVEL:-INFO}"
+
+    labels:
+      # ── Traefik labels ───────────────────────────────────────────────────
+      # Enable Traefik for this container
+      - "traefik.enable=true"
+
+      # Routing rule: replace wgadminui.example.com with your actual domain
+      - "traefik.http.routers.wgadminui.rule=Host(`${WGADMINUI_DOMAIN:-wgadminui.example.com}`)"
+
+      # Entrypoint: must match the HTTPS entrypoint name in your Traefik config
+      # (commonly "websecure" for port 443)
+      - "traefik.http.routers.wgadminui.entrypoints=websecure"
+
+      # TLS: enable and choose your cert resolver (e.g. "le" for Let's Encrypt)
+      - "traefik.http.routers.wgadminui.tls=true"
+      - "traefik.http.routers.wgadminui.tls.certresolver=${TRAEFIK_CERTRESOLVER:-le}"
+
+      # Internal port gunicorn listens on inside the container
+      - "traefik.http.services.wgadminui.loadbalancer.server.port=8000"
+
+      # Optional: HTTP → HTTPS redirect middleware (if not handled globally in Traefik)
+      # - "traefik.http.routers.wgadminui-http.rule=Host(`${WGADMINUI_DOMAIN:-wgadminui.example.com}`)"
+      # - "traefik.http.routers.wgadminui-http.entrypoints=web"
+      # - "traefik.http.routers.wgadminui-http.middlewares=redirect-to-https"
+      # - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+
+    # Connect to the external Traefik network.
+    # If you don't use Traefik, remove the networks section and rely on ports only.
+    networks:
+      - default
+      - traefik_network
+
+# =============================================================================
+# Volumes
+# =============================================================================
+
+volumes:
+  wgadminui_data:
+    # SQLite database + any runtime state
+    # To backup: docker run --rm -v wgadminui_data:/data -v $(pwd):/backup \
+    #   alpine tar czf /backup/wgadminui_backup.tar.gz /data
+
+# =============================================================================
+# Networks
+# =============================================================================
+
+networks:
+  default:
+  traefik_network:
+    # The Traefik network must exist before running this compose file.
+    # Create it with: docker network create traefik_network
+    # Or use the name of the network your Traefik container is connected to.
+    external: true
+    name: "${TRAEFIK_NETWORK:-traefik_network}"

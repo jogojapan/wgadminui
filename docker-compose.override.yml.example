@@ -1,0 +1,31 @@
+# =============================================================================
+# docker-compose.override.yml.example — Development overrides
+#
+# Copy to docker-compose.override.yml for local development.
+# This file is automatically loaded by docker compose when present.
+# =============================================================================
+
+services:
+  wgadminui:
+    build:
+      context: .
+    # Mount source code so changes are reflected without rebuilding
+    volumes:
+      - .:/app
+      - /etc/wireguard:/etc/wireguard
+      - wgadminui_data:/app/data
+    environment:
+      WGADMINUI_DEBUG: "True"
+      WGADMINUI_SECRET_KEY: "dev-insecure-secret-key-not-for-production"
+      WGADMINUI_ALLOWED_HOSTS: "localhost,127.0.0.1"
+      WGADMINUI_EMAIL_BACKEND: "django.core.mail.backends.console.EmailBackend"
+      # Allow passkeys over plain HTTP during development
+      WGADMINUI_WEBAUTHN_ALLOW_INSECURE_ORIGIN: "True"
+      WGADMINUI_LOG_LEVEL: "DEBUG"
+    # Use Django dev server instead of gunicorn
+    command: >
+      sh -c "python manage.py migrate --noinput &&
+             python manage.py create_initial_admin &&
+             python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
