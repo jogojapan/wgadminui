@@ -1,6 +1,12 @@
 {# Override allauth's root layout to extend our styled base.html.
-   Allauth templates define {% block content %} which flows directly into
-   our base.html's {% block content %}. Messages are handled by base.html. #}
+   We explicitly define {% block content %} here so that child templates
+   (login, signup, etc.) can safely override it without conflicting with
+   base.html's own {% block content %}. #}
 {% extends "base.html" %}
 
 {% block title %}{% block head_title %}{% endblock %}{% endblock %}
+
+{% block content
+{% block title %}{% block head_title %}{% endblock %}{% endblock %}
+
+{% block content %}{% endblock %}
