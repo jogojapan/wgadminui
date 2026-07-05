@@ -6,9 +6,9 @@
 #   2. Run:  docker compose up -d
 #
 # TRAEFIK INTEGRATION:
-#   This compose file includes Traefik labels. Traefik must be running on the
-#   same Docker network (see networks section below). The app is accessible
-#   externally via HTTPS through Traefik; internally it listens on HTTP.
+#   With network_mode: host, Traefik labels are still set but the container
+#   does not join Docker networks. Traefik must be configured to reach the
+#   app via the host's IP (or localhost if Traefik runs on the host).
 #
 #   Adjust the following labels to match your Traefik setup:
 #     - traefik.http.routers.wgadminui.rule          (your hostname)
@@ -36,6 +36,19 @@ services:
     container_name: wgadminui
     restart: unless-stopped
 
+    # ── Host network mode ─────────────────────────────────────────────────
+    # The container MUST share the host's network namespace so that `wg`
+    # commands can see and manage the host's WireGuard interfaces (wg0, etc.).
+    # Without this, `wg show wg0` fails with "No such device" because the
+    # interface only exists in the host network namespace.
+    #
+    # Implications of network_mode: host:
+    #   - ports: mapping is IGNORED — Gunicorn binds directly to host port 8000
+    #   - networks: section is IGNORED — the container uses the host's stack
+    #   - Traefik can still reach the app via the host's IP or localhost
+    #   - WGADMINUI_PORT env var now controls the actual Gunicorn bind port
+    network_mode: host
+
     # NET_ADMIN is required to run `wg` commands (add/remove peers, show status)
     cap_add:
       - NET_ADMIN
@@ -48,12 +61,10 @@ services:
       # Persistent SQLite database storage
       - wgadminui_data:/app/data
 
-    ports:
-      # Expose on the host at WGADMINUI_PORT (default 8000).
-      # Remove this section if using Traefik exclusively (no direct host port).
-      - "${WGADMINUI_PORT:-8000}:8000"
-      # Note: WGADMINUI_PORT controls the HOST port only.
-      # Gunicorn always listens on port 8000 inside the container.
+    # ── Ports ─────────────────────────────────────────────────────────────
+    # With network_mode: host, the ports: mapping is ignored.
+    # Gunicorn binds directly to the host's port (controlled by WGADMINUI_PORT).
+    # The port is documented here for clarity but has no effect at runtime.
 
     environment:
       # ── Core Django ─────────────────────────────────────────────────────
@@ -65,9 +76,8 @@ services:
       # Include your Traefik domain and/or localhost.
       WGADMINUI_ALLOWED_HOSTS: "${WGADMINUI_ALLOWED_HOSTS:-localhost}"
 
-      # Internal port gunicorn binds to — always 8000 inside the container.
-      # WGADMINUI_PORT controls the host-side port mapping only (see ports: above).
-      WGADMINUI_PORT: "8000"
+      # Port gunicorn binds to on the host (with network_mode: host).
+      WGADMINUI_PORT: "${WGADMINUI_PORT:-8000}"
 
       # Debug mode — MUST be False in production
       WGADMINUI_DEBUG: "${WGADMINUI_DEBUG:-False}"
@@ -121,36 +131,21 @@ services:
       # ── Logging ─────────────────────────────────────────────────────────
       WGADMINUI_LOG_LEVEL: "${WGADMINUI_LOG_LEVEL:-INFO}"
 
+    # ── Traefik labels ───────────────────────────────────────────────────
+    # With network_mode: host, Traefik must reach this container via the
+    # host's IP (or localhost if Traefik also runs on the host).
+    # The loadbalancer port must match the Gunicorn bind port.
     labels:
-      # ── Traefik labels ───────────────────────────────────────────────────
-      # Enable Traefik for this container
       - "traefik.enable=true"
-
-      # Routing rule: replace wgadminui.example.com with your actual domain
       - "traefik.http.routers.wgadminui.rule=Host(`${WGADMINUI_DOMAIN:-wgadminui.example.com}`)"
-
-      # Entrypoint: must match the HTTPS entrypoint name in your Traefik config
-      # (commonly "websecure" for port 443)
       - "traefik.http.routers.wgadminui.entrypoints=websecure"
-
-      # TLS: enable and choose your cert resolver (e.g. "le" for Let's Encrypt)
       - "traefik.http.routers.wgadminui.tls=true"
       - "traefik.http.routers.wgadminui.tls.certresolver=${TRAEFIK_CERTRESOLVER:-le}"
+      - "traefik.http.services.wgadminui.loadbalancer.server.port=${WGADMINUI_PORT:-8000}"
 
-      # Internal port gunicorn listens on inside the container
-      - "traefik.http.services.wgadminui.loadbalancer.server.port=8000"
-
-      # Optional: HTTP → HTTPS redirect middleware (if not handled globally in Traefik)
-      # - "traefik.http.routers.wgadminui-http.rule=Host(`${WGADMINUI_DOMAIN:-wgadminui.example.com}`)"
-      # - "traefik.http.routers.wgadminui-http.entrypoints=web"
-      # - "traefik.http.routers.wgadminui-http.middlewares=redirect-to-https"
-      # - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
-
-    # Connect to the external Traefik network.
-    # If you don't use Traefik, remove the networks section and rely on ports only.
-    networks:
-      - default
-      - traefik_network
+    # With network_mode: host, the networks: section is ignored.
+    # Traefik must be configured to reach the host's IP directly.
+    # If Traefik runs in Docker, add an extra_hosts entry or use host.docker.internal.
 
 # =============================================================================
 # Volumes
@@ -161,16 +156,3 @@ volumes:
     # SQLite database + any runtime state
     # To backup: docker run --rm -v wgadminui_data:/data -v $(pwd):/backup \
     #   alpine tar czf /backup/wgadminui_backup.tar.gz /data
-
-# =============================================================================
-# Networks
-# =============================================================================
-
-networks:
-  default:
-  traefik_network:
-    # The Traefik network must exist before running this compose file.
-    # Create it with: docker network create traefik_network
-    # Or use the name of the network your Traefik container is connected to.
-    external: true
-    name: "${TRAEFIK_NETWORK:-traefik_network}"

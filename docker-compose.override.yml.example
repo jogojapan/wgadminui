@@ -27,5 +27,3 @@ services:
       sh -c "python manage.py migrate --noinput &&
              python manage.py create_initial_admin &&
              python manage.py runserver 0.0.0.0:8000"
-    ports:
-      - "8000:8000"
