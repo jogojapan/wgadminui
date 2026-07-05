@@ -40,76 +40,126 @@ User = get_user_model()
 
 def _parse_conf(conf_path: str) -> dict:
     """
-    Parse a WireGuard .conf file and return a dict with:
+    Parse a WireGuard .conf file line-by-line and return a dict with:
         interface: {private_key, public_key, listen_port, address}
         peers: [{public_key, allowed_ips, comment, endpoint, persistent_keepalive}, ...]
+
+    Handles:
+      - Comments before a [Peer] block → used as the peer name.
+      - Comments inside a [Peer] block before any keys → used as the peer name.
+      - Comments after keys → ignored (they belong to the next peer).
+      - Commented-out [Peer] blocks (lines starting with #) → skipped entirely.
     """
     with open(conf_path) as fh:
-        content = fh.read()
-
-    # Split into [Interface] and [Peer] sections
-    sections = re.split(r"\n(?=\[)", content)
+        lines = fh.readlines()
 
     interface_data: dict = {}
     peers: list[dict] = []
-    pending_comment = ""  # comment line that precedes the next [Peer]
 
-    for section in sections:
-        section = section.strip()
-        if not section:
+    # Parser state
+    STATE_NONE = "none"
+    STATE_INTERFACE = "interface"
+    STATE_PEER = "peer"
+    STATE_COMMENTED = "commented"  # inside a commented-out section
+
+    state = STATE_NONE
+    current_kv: dict = {}
+    pending_comment = ""   # comment seen before the next [Peer] header
+    peer_comment = ""      # comment for the current peer (set before first key)
+
+    for line in lines:
+        stripped = line.strip()
+
+        # --- Blank lines: no state change ---
+        if not stripped:
             continue
 
-        header_match = re.match(r"\[(\w+)\]", section)
-        if not header_match:
-            # No header — this is a comment block sitting between two
-            # [Peer] sections (e.g. "# Alice's Laptop" on its own line
-            # before the next [Peer]).  Save it and attach to the next peer.
-            for line in section.splitlines():
-                stripped = line.strip()
-                if stripped.startswith("#"):
-                    pending_comment = stripped.lstrip("#").strip()
-            continue
+        # --- Section headers ---
+        header_match = re.match(r"^\[(\w+)\]", stripped)
+        if header_match:
+            section_type = header_match.group(1)
 
-        section_type = header_match.group(1)
-
-        # Extract key = value pairs
-        kv = {}
-        for line in section.splitlines():
-            line = line.strip()
-            if not line or line.startswith("#"):
+            if section_type == "Interface":
+                state = STATE_INTERFACE
+                current_kv = {}
+                pending_comment = ""
                 continue
-            m = re.match(r"(\w+)\s*=\s*(.+)", line)
-            if m:
-                kv[m.group(1)] = m.group(2).strip()
 
-        if section_type == "Interface":
-            interface_data = kv
-        elif section_type == "Peer":
-            # Prefer a comment inside the [Peer] section; fall back to a
-            # pending comment that appeared right before this [Peer] block.
-            comment = ""
-            for line in section.splitlines():
-                stripped = line.strip()
-                if stripped.startswith("#"):
-                    comment = stripped.lstrip("#").strip()
-                    break
+            elif section_type == "Peer":
+                # Save previous peer if we were in one
+                if state == STATE_PEER and current_kv:
+                    peers.append(_make_peer(current_kv, peer_comment))
 
-            if not comment and pending_comment:
-                comment = pending_comment
+                state = STATE_PEER
+                current_kv = {}
+                peer_comment = pending_comment
+                pending_comment = ""
+                continue
 
-            pending_comment = ""  # consumed
+        # --- Commented-out section header (e.g. "#[Peer]") ---
+        if re.match(r"^#\s*\[(\w+)\]", stripped):
+            # Save previous peer if we were in one
+            if state == STATE_PEER and current_kv:
+                peers.append(_make_peer(current_kv, peer_comment))
 
-            peers.append(
-                {
-                    "public_key": kv.get("PublicKey", ""),
-                    "allowed_ips": kv.get("AllowedIPs", ""),
-                    "comment": comment,
-                    "endpoint": kv.get("Endpoint", ""),
-                    "persistent_keepalive": kv.get("PersistentKeepalive", ""),
-                }
-            )
+            state = STATE_COMMENTED
+            current_kv = {}
+            pending_comment = ""
+            peer_comment = ""
+            continue
+
+        # --- Comment line ---
+        if stripped.startswith("#"):
+            comment_text = stripped.lstrip("#").strip()
+
+            if state == STATE_NONE or state == STATE_INTERFACE:
+                # Comment before any peer — could be a peer name
+                pending_comment = comment_text
+
+            elif state == STATE_PEER:
+                if not current_kv:
+                    # No keys yet — this comment is the peer's name
+                    if not peer_comment:
+                        peer_comment = comment_text
+                # else: comment after keys — belongs to next peer
+                else:
+                    pending_comment = comment_text
+
+            elif state == STATE_COMMENTED:
+                # Inside a commented-out block — ignore
+                pass
+
+            # In STATE_INTERFACE, comments are ignored
+            continue
+
+        # --- Key = Value line ---
+        m = re.match(r"(\w+)\s*=\s*(.+)", stripped)
+        if m:
+            key = m.group(1)
+            value = m.group(2).strip()
+
+            if state == STATE_INTERFACE:
+                interface_data[key] = value
+            elif state == STATE_PEER:
+                current_kv[key] = value
+            # STATE_COMMENTED / STATE_NONE: ignore
+
+    # Save the last peer if there is one
+    if state == STATE_PEER and current_kv:
+        peers.append(_make_peer(current_kv, peer_comment))
 
     return {"interface": interface_data, "peers": peers}
+
+
+def _make_peer(kv: dict, comment: str) -> dict:
+    """Build a peer dict from parsed key-value pairs and a comment."""
+    return {
+        "public_key": kv.get("PublicKey", ""),
+        "allowed_ips": kv.get("AllowedIPs", ""),
+        "comment": comment,
+        "endpoint": kv.get("Endpoint", ""),
+        "persistent_keepalive": kv.get("PersistentKeepalive", ""),
+    }
 
 
 def _derive_public_key(private_key: str) -> str:
