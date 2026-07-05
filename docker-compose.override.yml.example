@@ -19,6 +19,8 @@ services:
       WGADMINUI_SECRET_KEY: "dev-insecure-secret-key-not-for-production"
       WGADMINUI_ALLOWED_HOSTS: "localhost,127.0.0.1"
       WGADMINUI_EMAIL_BACKEND: "django.core.mail.backends.console.EmailBackend"
+      WGADMINUI_SITE_NAME: "wgadminui (dev)"
+      WGADMINUI_DOMAIN: "localhost:8000"
       # Allow passkeys over plain HTTP during development
       WGADMINUI_WEBAUTHN_ALLOW_INSECURE_ORIGIN: "True"
       WGADMINUI_LOG_LEVEL: "DEBUG"

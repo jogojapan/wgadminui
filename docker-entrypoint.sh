@@ -28,6 +28,9 @@ fi
 echo "[entrypoint] Applying database migrations..."
 gosu wgadmin python manage.py migrate --noinput
 
+echo "[entrypoint] Syncing site domain and name..."
+gosu wgadmin python manage.py sync_site || true
+
 echo "[entrypoint] Creating initial admin user (if not exists)..."
 gosu wgadmin python manage.py create_initial_admin || true
 

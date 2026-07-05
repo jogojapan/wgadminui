@@ -128,6 +128,8 @@ All variables are prefixed `WGADMINUI_`. See `.env.example` for a full annotated
 | `WGADMINUI_EMAIL_PASSWORD` | | | SMTP password |
 | `WGADMINUI_EMAIL_USE_TLS` | | `True` | SMTP STARTTLS |
 | `WGADMINUI_DEFAULT_FROM_EMAIL` | | `noreply@example.com` | Sender address |
+| `WGADMINUI_SITE_NAME` | | `wgadminui` | Display name in emails, page titles, and templates |
+| `WGADMINUI_DOMAIN` | | `wgadminui.example.com` | Public domain (Traefik routing + email links) |
 | `WGADMINUI_WEBAUTHN_ALLOW_INSECURE_ORIGIN` | | `False` | Allow passkeys over HTTP (dev only) |
 | `WGADMINUI_LOG_LEVEL` | | `INFO` | Python logging level |
 | `WGADMINUI_GUNICORN_WORKERS` | | `3` | Gunicorn worker count |

@@ -82,6 +82,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "wgadminui.context_processors.site_info",
             ],
         },
     },
@@ -144,13 +145,22 @@ LOGOUT_REDIRECT_URL = "/accounts/login/"
 
 SITE_ID = 1
 
+# Site name and domain — used in email subjects, templates, and the
+# django.contrib.sites framework (which allauth uses for email links).
+# WGADMINUI_DOMAIN is also used by Traefik labels in docker-compose.yml.
+WGADMINUI_SITE_NAME = config("WGADMINUI_SITE_NAME", default="wgadminui")
+WGADMINUI_SITE_DOMAIN = config("WGADMINUI_DOMAIN", default="wgadminui.example.com")
+
 # ---------------------------------------------------------------------------
 # django-invitations
 # ---------------------------------------------------------------------------
 
 INVITATIONS_INVITATION_ONLY = True
 INVITATIONS_ACCEPT_INVITE_AFTER_SIGNUP = True
-INVITATIONS_EMAIL_SUBJECT_PREFIX = "[wgadminui] "
+INVITATIONS_EMAIL_SUBJECT_PREFIX = config(
+    "WGADMINUI_EMAIL_SUBJECT_PREFIX",
+    default=f"[{WGADMINUI_SITE_NAME}] ",
+)
 
 # ---------------------------------------------------------------------------
 # Email / SMTP

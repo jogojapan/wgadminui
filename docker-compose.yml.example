@@ -115,6 +115,14 @@ services:
       WGADMINUI_EMAIL_USE_SSL: "${WGADMINUI_EMAIL_USE_SSL:-False}"
       WGADMINUI_DEFAULT_FROM_EMAIL: "${WGADMINUI_DEFAULT_FROM_EMAIL:-noreply@example.com}"
 
+      # ── Site identity ──────────────────────────────────────────────────
+      # Display name used in email subjects, page titles, and templates.
+      WGADMINUI_SITE_NAME: "${WGADMINUI_SITE_NAME:-wgadminui}"
+
+      # Domain used for email links (verification, password reset, etc.)
+      # and Traefik routing. Must match the public hostname of the app.
+      WGADMINUI_DOMAIN: "${WGADMINUI_DOMAIN:-wgadminui.example.com}"
+
       # ── WebAuthn (passkeys) ──────────────────────────────────────────────
       # Set to True ONLY for local HTTP development (not for production)
       WGADMINUI_WEBAUTHN_ALLOW_INSECURE_ORIGIN: "${WGADMINUI_WEBAUTHN_ALLOW_INSECURE_ORIGIN:-False}"
