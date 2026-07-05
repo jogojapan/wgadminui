@@ -113,6 +113,11 @@ services:
       WGADMINUI_GUNICORN_WORKERS: "${WGADMINUI_GUNICORN_WORKERS:-3}"
       WGADMINUI_GUNICORN_TIMEOUT: "${WGADMINUI_GUNICORN_TIMEOUT:-60}"
 
+      # ── Data directory ──────────────────────────────────────────────────
+      # Path inside the container where the SQLite database is stored.
+      # Must match the container-side target of the data volume mount.
+      WGADMINUI_DATA_DIR: "${WGADMINUI_DATA_DIR:-/app/data}"
+
       # ── Logging ─────────────────────────────────────────────────────────
       WGADMINUI_LOG_LEVEL: "${WGADMINUI_LOG_LEVEL:-INFO}"
 

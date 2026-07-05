@@ -21,6 +21,7 @@ media/
 
 # Docker overrides
 docker-compose.override.yml
+docker-compose.yml
 
 # Editors
 .vscode/
