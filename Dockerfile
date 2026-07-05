@@ -20,9 +20,12 @@ FROM python:3.12-slim
 # Runtime system dependencies:
 #   wireguard-tools  → provides the `wg` binary
 #   iproute2         → provides `ip` (needed by wg-quick, useful for diagnostics)
+#   gosu             → used by the entrypoint to drop from root to wgadmin after
+#                      fixing bind-mount directory ownership at runtime
 RUN apt-get update && apt-get install -y --no-install-recommends \
     wireguard-tools \
     iproute2 \
+    gosu \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy installed Python packages from builder
@@ -39,13 +42,14 @@ ARG WGADMINUI_DEBUG=False
 ARG WGADMINUI_ALLOWED_HOSTS=localhost
 RUN python manage.py collectstatic --noinput
 
-# Data directory (SQLite DB and any runtime files)
-RUN mkdir -p /app/data
-
 # Non-root user for the application process.
 # Note: wg commands require NET_ADMIN capability (set in docker-compose);
 # they do NOT require running as root — only the capability matters.
-RUN groupadd -r wgadmin && useradd -r -g wgadmin -d /app wgadmin \
+#
+# A fixed UID/GID (1000) is used so that bind-mounted host directories can be
+# pre-owned with a known UID (e.g. `sudo chown -R 1000:1000 /fastspace/wgadminui/data`).
+RUN groupadd -g 1000 wgadmin && useradd -u 1000 -g wgadmin -d /app wgadmin \
+    && mkdir -p /app/data \
     && chown -R wgadmin:wgadmin /app
 
 # Give the wg binary the cap_net_admin file capability so our non-root user
@@ -53,7 +57,9 @@ RUN groupadd -r wgadmin && useradd -r -g wgadmin -d /app wgadmin \
 # to the container, making file-capability elevation effective.
 RUN setcap cap_net_admin+ep /usr/bin/wg 2>/dev/null || true
 
-USER wgadmin
+# The entrypoint starts as root so it can fix bind-mount ownership, then
+# drops to wgadmin via gosu before exec-ing the application.
+# Do NOT add USER here.
 
 EXPOSE 8000
 
