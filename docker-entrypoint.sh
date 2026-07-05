@@ -10,7 +10,7 @@ set -e
 # bind-mounts where the host directory may be owned by root or another user.
 DATA_DIR="${WGADMINUI_DATA_DIR:-/app/data}"
 mkdir -p "$DATA_DIR"
-chown wgadmin:wgadmin "$DATA_DIR"
+chown -R wgadmin:wgadmin "$DATA_DIR"
 
 echo "[entrypoint] Applying database migrations..."
 gosu wgadmin python manage.py migrate --noinput
