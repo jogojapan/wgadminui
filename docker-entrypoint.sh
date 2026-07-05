@@ -12,6 +12,19 @@ DATA_DIR="${WGADMINUI_DATA_DIR:-/app/data}"
 mkdir -p "$DATA_DIR"
 chown -R wgadmin:wgadmin "$DATA_DIR"
 
+# Fix WireGuard config directory permissions so the wgadmin user can
+# read and write .conf files after we drop privileges.  The host's
+# /etc/wireguard is typically 0700 root:root; without this fix the
+# application will get PermissionError on every conf file operation.
+# This is safe because:
+#   - wg-quick and systemd run as root (bypass all permission checks)
+#   - The container already has NET_ADMIN on the host network namespace
+if [ -d /etc/wireguard ]; then
+    chown -R wgadmin:wgadmin /etc/wireguard
+    chmod 750 /etc/wireguard
+    find /etc/wireguard -name '*.conf' -exec chmod 640 {} \;
+fi
+
 echo "[entrypoint] Applying database migrations..."
 gosu wgadmin python manage.py migrate --noinput
 
