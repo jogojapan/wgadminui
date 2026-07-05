@@ -37,10 +37,11 @@ WORKDIR /app
 COPY . /app
 
 # Collect static files at build time (whitenoise serves them from staticfiles/)
-ARG WGADMINUI_SECRET_KEY=build-phase-placeholder
-ARG WGADMINUI_DEBUG=False
-ARG WGADMINUI_ALLOWED_HOSTS=localhost
-RUN python manage.py collectstatic --noinput
+# Using inline env vars instead of ARG to avoid Docker's "SecretsUsedInArgOrEnv" warning
+RUN WGADMINUI_SECRET_KEY=build-phase-placeholder \
+    WGADMINUI_DEBUG=False \
+    WGADMINUI_ALLOWED_HOSTS=localhost \
+    python manage.py collectstatic --noinput
 
 # Non-root user for the application process.
 # Note: wg commands require NET_ADMIN capability (set in docker-compose);
