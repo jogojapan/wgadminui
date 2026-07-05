@@ -1,0 +1,99 @@
+# =============================================================================
+# wgadminui — Traefik dynamic configuration (static file variant)
+#
+# USE THIS FILE when Traefik is configured to read dynamic configuration from
+# a directory of .toml files (i.e. the `file` provider), rather than watching
+# Docker labels.  This is common when:
+#   • Traefik itself does not run inside Docker (bare-metal / systemd install)
+#   • Your Traefik container does not share a Docker network with wgadminui
+#   • You prefer centralised, version-controlled Traefik configuration
+#
+# HOW TO USE
+# ----------
+# 1. Copy this file to the Traefik dynamic configuration directory and drop
+#    the ".example" suffix:
+#
+#      cp traefik/dynamic/wgadminui.toml.example \
+#         /etc/traefik/dynamic/wgadminui.toml
+#
+# 2. Replace every placeholder (surrounded by < >) with the real value:
+#
+#   <WGADMINUI_DOMAIN>        Domain name Traefik should route to this service.
+#                             Matches WGADMINUI_DOMAIN in .env
+#                             Example: wgadminui.example.com
+#
+#   <TRAEFIK_CERTRESOLVER>    Name of the ACME certificate resolver defined in
+#                             your static Traefik config (traefik.yml / traefik.toml).
+#                             Matches TRAEFIK_CERTRESOLVER in .env
+#                             Example: le
+#
+#   <WGADMINUI_HOST>          Hostname or IP address where the wgadminui
+#                             container/process is reachable from Traefik.
+#                             Use the container name if Traefik runs in Docker
+#                             and shares a network, or the host IP / a DNS name
+#                             otherwise.
+#                             Example: 127.0.0.1   or   wgadminui
+#
+#   <WGADMINUI_PORT>          Internal port gunicorn listens on inside the
+#                             container (or on the host in bare-metal installs).
+#                             Matches WGADMINUI_PORT in .env
+#                             Default: 8000
+#
+# 3. Traefik picks up the file automatically (no reload needed) if the `file`
+#    provider has `watch = true` (the default).
+#
+# 4. If you are ALSO using docker-compose labels for wgadminui, remove the
+#    Traefik labels from docker-compose.yml (or the override file) to avoid
+#    duplicate router/service definitions.
+#
+# NOTE: The HTTP → HTTPS redirect router below assumes that Traefik already
+# has a global or per-entrypoint redirect configured.  If not, uncomment the
+# middleware block at the bottom of this file and reference it explicitly.
+# =============================================================================
+
+[http]
+
+  # ---------------------------------------------------------------------------
+  # Routers
+  # ---------------------------------------------------------------------------
+
+  [http.routers]
+
+    # HTTPS router — serves the application
+    [http.routers.wgadminui]
+      rule        = "Host(`<WGADMINUI_DOMAIN>`)"
+      entryPoints = ["websecure"]
+      service     = "wgadminui"
+
+      [http.routers.wgadminui.tls]
+        certResolver = "<TRAEFIK_CERTRESOLVER>"
+
+    # HTTP router — redirects plain HTTP to HTTPS
+    # Remove this block if Traefik already handles the redirect globally.
+    [http.routers.wgadminui-http]
+      rule        = "Host(`<WGADMINUI_DOMAIN>`)"
+      entryPoints = ["web"]
+      service     = "wgadminui"
+      middlewares = ["wgadminui-https-redirect"]
+
+  # ---------------------------------------------------------------------------
+  # Middlewares
+  # ---------------------------------------------------------------------------
+
+  [http.middlewares]
+
+    # Permanent redirect from HTTP to HTTPS
+    [http.middlewares.wgadminui-https-redirect.redirectScheme]
+      scheme    = "https"
+      permanent = true
+
+  # ---------------------------------------------------------------------------
+  # Services
+  # ---------------------------------------------------------------------------
+
+  [http.services]
+
+    [http.services.wgadminui.loadBalancer]
+
+      [[http.services.wgadminui.loadBalancer.servers]]
+        url = "http://<WGADMINUI_HOST>:<WGADMINUI_PORT>"

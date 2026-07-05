@@ -118,7 +118,16 @@ All variables are prefixed `WGADMINUI_`. See `.env.example` for a full annotated
 
 ## Traefik integration
 
-The docker-compose file includes Traefik v2/v3 labels. Key labels:
+wgadminui supports two ways to integrate with Traefik. Choose the one that matches
+your infrastructure.
+
+### Option A — Docker labels (default)
+
+The `docker-compose.yml` file ships with Traefik v2/v3 labels. This is the
+simplest option when Traefik runs as a container on the same host and uses the
+Docker provider.
+
+Key labels applied automatically:
 
 ```yaml
 labels:
@@ -132,6 +141,41 @@ labels:
 
 Set `WGADMINUI_DOMAIN` and `TRAEFIK_CERTRESOLVER` in your `.env`.
 Traefik terminates TLS; Django trusts the `X-Forwarded-Proto` header automatically.
+
+### Option B — Static file provider (`traefik/dynamic/`)
+
+Use this approach when:
+- Traefik is installed on bare metal (systemd) or in a container that **cannot**
+  reach the Docker socket / wgadminui's Docker network.
+- You manage Traefik configuration via version-controlled `.toml` files in a
+  directory watched by the [file provider](https://doc.traefik.io/traefik/providers/file/).
+
+**Steps:**
+
+1. Copy the example file to your Traefik dynamic configuration directory:
+
+   ```bash
+   cp traefik/dynamic/wgadminui.toml.example \
+      /etc/traefik/dynamic/wgadminui.toml
+   ```
+
+2. Open the file and replace every `<PLACEHOLDER>` with real values:
+
+   | Placeholder | Corresponding `.env` variable | Example value |
+   |---|---|---|
+   | `<WGADMINUI_DOMAIN>` | `WGADMINUI_DOMAIN` | `wgadminui.example.com` |
+   | `<TRAEFIK_CERTRESOLVER>` | `TRAEFIK_CERTRESOLVER` | `le` |
+   | `<WGADMINUI_HOST>` | _(host/IP reachable from Traefik)_ | `127.0.0.1` or `wgadminui` |
+   | `<WGADMINUI_PORT>` | `WGADMINUI_PORT` | `8000` |
+
+3. If Traefik's `file` provider has `watch = true` (the default), the new router
+   is picked up automatically — no Traefik restart needed.
+
+4. Remove (or comment out) the `labels` block in `docker-compose.yml` to avoid
+   duplicate router/service definitions if the Docker provider is also active.
+
+> **Tip:** The example file includes an HTTP → HTTPS redirect router. Remove it
+> if Traefik already handles redirects globally via an entrypoint redirect.
 
 ---
 
