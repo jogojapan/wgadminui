@@ -69,6 +69,9 @@
               <li><a class="dropdown-item" href="{% url 'mfa_index' %}">
                 <i class="bi bi-key-fill me-1"></i>Passkeys &amp; 2FA
               </a></li>
+              <li><a class="dropdown-item" href="{% url 'account_change_password' %}">
+                <i class="bi bi-lock-fill me-1"></i>Change password
+              </a></li>
               <li><hr class="dropdown-divider"></li>
               <li>
                 <form method="post" action="{% url 'account_logout' %}">
