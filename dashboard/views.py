@@ -64,7 +64,6 @@ class LanguageSetView(LoginRequiredMixin, View):
             request.user.language = language
             request.user.save(update_fields=["language"])
             translation.activate(language)
-            request.session[translation.LANGUAGE_SESSION_KEY] = language
         # Redirect back to the referring page, or dashboard as fallback
         next_url = request.META.get("HTTP_REFERER", "/")
         return redirect(next_url)

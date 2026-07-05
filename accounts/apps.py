@@ -16,4 +16,3 @@ class AccountsConfig(AppConfig):
         """Copy the user's preferred language into the session on login."""
         if user.language:
             translation.activate(user.language)
-            request.session[translation.LANGUAGE_SESSION_KEY] = user.language
