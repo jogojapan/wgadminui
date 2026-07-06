@@ -2121,3 +2121,31 @@ msgstr "ピア設定"
 #: wireguard/models.py:136
 msgid "peer configurations"
 msgstr "ピア設定"
+
+# Translations for django-invitations email templates (not shipped with the
+# package for Japanese, so provided here in the project locale).
+#: invitations/templates/invitations/email/email_invite_subject.txt
+#, python-format
+msgid "Invitation to join %(site_name)s"
+msgstr "%(site_name)s への招待"
+
+#: invitations/templates/invitations/email/email_invite_message.txt
+#, python-format
+msgid ""
+"\n"
+"\n"
+"Hello,\n"
+"\n"
+"You (%(email)s) have been invited to join %(site_name)s\n"
+"\n"
+"If you'd like to join, please go to %(invite_url)s\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"こんにちは、\n"
+"\n"
+"%(email)s さんは %(site_name)s に招待されています。\n"
+"\n"
+"参加するには、%(invite_url)s にアクセスしてください。\n"
+"\n"
