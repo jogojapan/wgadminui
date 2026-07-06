@@ -372,6 +372,10 @@ class AdminUserDeleteView(AdminRequiredMixin, View):
         }
         adapter.send_mail("account/email/user_deleted", user_to_delete.email, context)
 
+        # Delete peers properly to sync with WireGuard
+        for peer in user_to_delete.peer_configs.all():
+            wg_services.delete_peer(peer)
+
         user_to_delete.delete()
         messages.success(request, _("User %s has been deleted.") % user_to_delete.email)
         return redirect("admin_users")

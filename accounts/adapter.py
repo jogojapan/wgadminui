@@ -10,9 +10,9 @@ from django.conf import settings
 from django.utils import translation
 
 from invitations.adapters import BaseInvitationsAdapter
+from allauth.account.adapter import DefaultAccountAdapter
 
-
-class LanguageAwareInvitationsAdapter(BaseInvitationsAdapter):
+class LanguageAwareInvitationsAdapter(BaseInvitationsAdapter, DefaultAccountAdapter):
     """
     Custom adapter that activates the user's preferred language before
     sending emails, so invitation and verification emails are sent in
