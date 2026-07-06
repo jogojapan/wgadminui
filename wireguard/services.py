@@ -269,12 +269,14 @@ def regenerate_peer_keypair(peer: PeerConfig) -> tuple[str, str]:
 def delete_peer(peer: PeerConfig) -> None:
     """Remove a peer from the live interface, conf file, and DB."""
     interface = peer.interface
+    public_key = peer.peer_public_key
+    # Delete from DB first so _sync_conf_file rebuilds the conf without this peer.
+    peer.delete()
     try:
-        wg_sync.remove_peer(interface.name, peer.peer_public_key)
+        wg_sync.remove_peer(interface.name, public_key)
         _sync_conf_file(interface)
     except Exception as exc:
         logger.error("Failed to remove peer from interface: %s", exc)
-    peer.delete()
 
 
 # ---------------------------------------------------------------------------
