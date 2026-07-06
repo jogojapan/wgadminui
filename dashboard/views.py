@@ -60,13 +60,23 @@ class LanguageSetView(LoginRequiredMixin, View):
     def post(self, request):
         language = request.POST.get("language")
         valid_langs = dict(settings.LANGUAGES)
+        next_url = request.META.get("HTTP_REFERER", "/")
+        response = redirect(next_url)
         if language in valid_langs:
             request.user.language = language
             request.user.save(update_fields=["language"])
             translation.activate(language)
-        # Redirect back to the referring page, or dashboard as fallback
-        next_url = request.META.get("HTTP_REFERER", "/")
-        return redirect(next_url)
+            response.set_cookie(
+                settings.LANGUAGE_COOKIE_NAME,
+                language,
+                max_age=settings.LANGUAGE_COOKIE_AGE if hasattr(settings, 'LANGUAGE_COOKIE_AGE') else 365 * 24 * 60 * 60,
+                domain=settings.LANGUAGE_COOKIE_DOMAIN if hasattr(settings, 'LANGUAGE_COOKIE_DOMAIN') else None,
+                path=settings.LANGUAGE_COOKIE_PATH if hasattr(settings, 'LANGUAGE_COOKIE_PATH') else '/',
+                secure=settings.LANGUAGE_COOKIE_SECURE if hasattr(settings, 'LANGUAGE_COOKIE_SECURE') else False,
+                httponly=settings.LANGUAGE_COOKIE_HTTPONLY if hasattr(settings, 'LANGUAGE_COOKIE_HTTPONLY') else False,
+                samesite=settings.LANGUAGE_COOKIE_SAMESITE if hasattr(settings, 'LANGUAGE_COOKIE_SAMESITE') else None,
+            )
+        return response
 
 
 def _get_default_interface():
