@@ -19,5 +19,6 @@ urlpatterns = [
 
     # Admin views
     path("admin-panel/users/", views.AdminUsersView.as_view(), name="admin_users"),
+    path("admin-panel/users/<int:pk>/delete/", views.AdminUserDeleteView.as_view(), name="admin_user_delete"),
     path("admin-panel/status/", views.InterfaceStatusView.as_view(), name="interface_status"),
 ]

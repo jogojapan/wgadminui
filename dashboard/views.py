@@ -23,6 +23,8 @@ from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
 
 from invitations.utils import get_invitation_model
+from accounts.adapter import LanguageAwareInvitationsAdapter
+from django.contrib.sites.shortcuts import get_current_site
 
 from wireguard import services as wg_services
 from wireguard.models import PeerConfig, WireguardInterface
@@ -337,6 +339,41 @@ class AdminUsersView(AdminRequiredMixin, View):
         invite = Invitation.create(email=email, inviter=request.user)
         invite.send_invitation(request, extra_context={"language": language})
         messages.success(request, _("Invitation sent to %s.") % email)
+        return redirect("admin_users")
+
+
+class AdminUserDeleteView(AdminRequiredMixin, View):
+    template_name = "dashboard/admin_user_delete_confirm.html"
+
+    def get(self, request, pk):
+        user_to_delete = get_object_or_404(User, pk=pk)
+        if user_to_delete == request.user:
+            messages.error(request, _("You cannot delete yourself."))
+            return redirect("admin_users")
+        return render(request, self.template_name, {"user_to_delete": user_to_delete})
+
+    def post(self, request, pk):
+        user_to_delete = get_object_or_404(User, pk=pk)
+        if user_to_delete == request.user:
+            messages.error(request, _("You cannot delete yourself."))
+            return redirect("admin_users")
+
+        password = request.POST.get("password")
+        if not request.user.check_password(password):
+            messages.error(request, _("Incorrect password. User not deleted."))
+            return render(request, self.template_name, {"user_to_delete": user_to_delete})
+
+        # Send email before deleting so we have the language and email
+        adapter = LanguageAwareInvitationsAdapter(request)
+        context = {
+            "user_email": user_to_delete.email,
+            "site_name": get_current_site(request).name,
+            "language": user_to_delete.language,
+        }
+        adapter.send_mail("account/email/user_deleted", user_to_delete.email, context)
+
+        user_to_delete.delete()
+        messages.success(request, _("User %s has been deleted.") % user_to_delete.email)
         return redirect("admin_users")
 
 
