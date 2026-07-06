@@ -346,6 +346,21 @@ class AdminUsersView(AdminRequiredMixin, View):
         return redirect("admin_users")
 
 
+class AdminInvitationDeleteView(AdminRequiredMixin, View):
+    template_name = "dashboard/admin_invitation_delete_confirm.html"
+
+    def get(self, request, pk):
+        invitation = get_object_or_404(Invitation, pk=pk, accepted=False)
+        return render(request, self.template_name, {"invitation": invitation})
+
+    def post(self, request, pk):
+        invitation = get_object_or_404(Invitation, pk=pk, accepted=False)
+        email = invitation.email
+        invitation.delete()
+        messages.success(request, _("Invitation for %s has been cancelled.") % email)
+        return redirect("admin_users")
+
+
 class AdminUserDeleteView(AdminRequiredMixin, View):
     template_name = "dashboard/admin_user_delete_confirm.html"
 

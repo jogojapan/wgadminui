@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Cancel Invitation" %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card border-danger">
+      <div class="card-header bg-danger text-white fw-semibold">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>{% trans "Cancel Pending Invitation" %}
+      </div>
+      <div class="card-body">
+        <p class="mb-4">
+          {% blocktranslate with email=invitation.email %}Are you sure you want to cancel the pending invitation for <strong>{{ email }}</strong>?{% endblocktranslate %}
+        </p>
+        <p class="text-muted small mb-4">
+          <i class="bi bi-info-circle me-1"></i>{% trans "The invitation link will become invalid. You can send a new invitation afterwards." %}
+        </p>
+
+        <form method="post">
+          {% csrf_token %}
+          <div class="d-flex justify-content-between">
+            <a href="{% url 'admin_users' %}" class="btn btn-outline-secondary">
+              <i class="bi bi-x-circle me-1"></i>{% trans "Cancel" %}
+            </a>
+            <button type="submit" class="btn btn-danger">
+              <i class="bi bi-trash me-1"></i>{% trans "Delete Invitation" %}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

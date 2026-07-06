@@ -49,7 +49,14 @@
           {% for inv in pending_invitations %}
             <li class="list-group-item d-flex justify-content-between align-items-center small">
               <span>{{ inv.email }}</span>
-              <span class="text-muted">{{ inv.sent|date:"Y-m-d" }}</span>
+              <span class="d-flex align-items-center gap-2">
+                <span class="text-muted">{{ inv.sent|date:"Y-m-d" }}</span>
+                <a href="{% url 'admin_invitation_delete' inv.pk %}"
+                   class="btn btn-sm btn-outline-danger py-0 px-1"
+                   title="{% trans 'Cancel invitation' %}">
+                  <i class="bi bi-trash"></i>
+                </a>
+              </span>
             </li>
           {% endfor %}
         </ul>
