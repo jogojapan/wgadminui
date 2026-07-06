@@ -69,8 +69,43 @@ def syncconf(interface_name: str, conf_path: str) -> None:
     Apply the conf file to a running interface without disrupting existing
     sessions.  Uses `wg syncconf` which only adds/removes/changes peers
     that differ.
+
+    ``wg syncconf`` is the raw WireGuard tool and rejects wg-quick-only
+    directives (Address, DNS, MTU, Table, Pre/PostUp/Down, SaveConfig).
+    We strip those from a temporary copy before calling syncconf so that
+    the permanent conf file (used by wg-quick) is left untouched.
     """
-    _run(["wg", "syncconf", interface_name, conf_path])
+    # wg-quick-only keys that wg syncconf does not understand
+    _WGQUICK_KEYS = {
+        "address", "dns", "mtu", "table",
+        "preup", "postup", "predown", "postdown", "saveconfig",
+    }
+
+    with open(conf_path) as fh:
+        original = fh.read()
+
+    stripped_lines = []
+    for line in original.splitlines():
+        stripped = line.strip()
+        if "=" in stripped:
+            key = stripped.split("=", 1)[0].strip().lower()
+            if key in _WGQUICK_KEYS:
+                continue
+        stripped_lines.append(line)
+    stripped_conf = "\n".join(stripped_lines) + "\n"
+
+    dir_path = os.path.dirname(conf_path)
+    fd, tmp_path = tempfile.mkstemp(dir=dir_path, prefix=".wg_syncconf_tmp_")
+    try:
+        with os.fdopen(fd, "w") as fh:
+            fh.write(stripped_conf)
+        _run(["wg", "syncconf", interface_name, tmp_path])
+    finally:
+        try:
+            os.unlink(tmp_path)
+        except OSError:
+            pass
+
     logger.info("wg_sync: syncconf applied to %s", interface_name)
 
 

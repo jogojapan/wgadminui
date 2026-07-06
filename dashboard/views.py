@@ -333,9 +333,13 @@ class AdminUsersView(AdminRequiredMixin, View):
         if User.objects.filter(email=email).exists():
             messages.warning(request, _("%s is already a registered user.") % email)
             return redirect("admin_users")
-        if Invitation.objects.filter(email=email, accepted=False).exists():
-            messages.warning(request, _("An invitation is already pending for %s.") % email)
-            return redirect("admin_users")
+        existing = Invitation.objects.filter(email=email).first()
+        if existing:
+            if not existing.accepted:
+                messages.warning(request, _("An invitation is already pending for %s.") % email)
+                return redirect("admin_users")
+            # Stale accepted invitation (user was deleted); remove it so we can re-invite.
+            existing.delete()
         invite = Invitation.create(email=email, inviter=request.user)
         invite.send_invitation(request, extra_context={"language": language})
         messages.success(request, _("Invitation sent to %s.") % email)
