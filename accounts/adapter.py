@@ -27,6 +27,21 @@ class LanguageAwareInvitationsAdapter(BaseInvitationsAdapter, DefaultAccountAdap
         """Required by django-invitations views."""
         return user_signed_up
 
+    def is_login_by_code_required(self, login):
+        """
+        Override to guard against allauth calling get_adapter() without a
+        request (bug in allauth 65.x, stages.py line 178).  When request is
+        None we cannot read session authentication records, so fall back to
+        the same logic as the base class but treat records as empty.
+        """
+        if self.request is None:
+            from allauth.account import app_settings
+            value = app_settings.LOGIN_BY_CODE_REQUIRED
+            if isinstance(value, bool):
+                return value
+            return False
+        return super().is_login_by_code_required(login)
+
     def send_mail(self, template_prefix, email, context):
         """
         Override send_mail to activate the recipient's language before
