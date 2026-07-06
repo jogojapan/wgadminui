@@ -20,6 +20,7 @@ class LanguageAwareInvitationsAdapter(BaseInvitationsAdapter, DefaultAccountAdap
     """
 
     def __init__(self, request=None):
+        DefaultAccountAdapter.__init__(self, request)
         self.request = request
 
     def get_user_signed_up_signal(self):
