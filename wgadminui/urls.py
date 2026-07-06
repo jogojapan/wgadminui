@@ -23,6 +23,8 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     # django-invitations
     path("invitations/", include("invitations.urls", namespace="invitations")),
+    # i18n
+    path("i18n/", include("django.conf.urls.i18n")),
     # Our dashboard app (catches everything else)
     path("", include("dashboard.urls")),
 ]
