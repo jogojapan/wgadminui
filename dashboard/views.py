@@ -341,7 +341,7 @@ class AdminUsersView(AdminRequiredMixin, View):
             # Stale accepted invitation (user was deleted); remove it so we can re-invite.
             existing.delete()
         invite = Invitation.create(email=email, inviter=request.user)
-        invite.send_invitation(request, extra_context={"language": language})
+        invite.send_invitation(request, language=language)
         messages.success(request, _("Invitation sent to %s.") % email)
         return redirect("admin_users")
 
