@@ -118,3 +118,50 @@
   --wg-danger-border:   #7F1D1D;
   --wg-danger-text:     #FCA5A5;
 }
+
+/*
+ * Sepia theme overrides.
+ * Warm, slightly yellowish/beige palette — easy on the eyes.
+ * Kicks in when data-theme="sepia" is set on <html>.
+ */
+[data-theme="sepia"] {
+  --wg-body-bg:         #F5ECD7;
+  --wg-surface:         #FDF8EF;
+  --wg-surface-raised:  #FDF8EF;
+  --wg-surface-subtle:  #F9F0DC;
+  --wg-border:          #D4C5A9;
+  --wg-border-strong:   #BFA98A;
+
+  --wg-text:            #3E2C1C;
+  --wg-text-muted:      #7A6652;
+  --wg-text-faint:      #A89880;
+  --wg-text-inverse:    #F5ECD7;
+
+  --wg-nav-bg-from:     #2C1810;
+  --wg-nav-bg-to:       #3E2C1C;
+  --wg-nav-border:      rgba(79, 107, 237, 0.25);
+
+  --wg-code-bg:         #2C1810;
+  --wg-code-text:       #E2D5C0;
+  --wg-code-border:     #4A3628;
+
+  --wg-accent-light:    #EDE5D0;
+  --wg-warn-bg:         #FDF0C4;
+  --wg-warn-border:     #D4A843;
+  --wg-warn-text:       #7A5C1B;
+
+  --wg-danger-bg:       #F9E4D8;
+  --wg-danger-border:   #D49A8A;
+  --wg-danger-text:     #8B2E1A;
+
+  --wg-online-bg:       #E8F0D8;
+  --wg-offline-bg:      #EDE5D0;
+  --wg-never-bg:        #F9E4D8;
+
+  --wg-shadow-sm:       0 1px 3px rgba(62, 44, 28, 0.08),
+                        0 1px 2px rgba(62, 44, 28, 0.05);
+  --wg-shadow:          0 4px 6px -1px rgba(62, 44, 28, 0.10),
+                        0 2px 4px -1px rgba(62, 44, 28, 0.06);
+  --wg-shadow-hover:    0 10px 15px -3px rgba(62, 44, 28, 0.12),
+                        0 4px  6px -2px rgba(62, 44, 28, 0.07);
+}

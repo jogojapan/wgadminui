@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-06 07:19+0000\n"
+"POT-Creation-Date: 2026-07-07 20:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,40 +18,60 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: accounts/admin.py:16 templates/dashboard/admin_users.html:71
+#: accounts/admin.py:16 templates/dashboard/admin_users.html:78
 msgid "Role"
 msgstr "役割"
 
 #: accounts/models.py:15 templates/base.html:45
-#: templates/dashboard/admin_users.html:88
+#: templates/dashboard/admin_users.html:95
 msgid "Admin"
 msgstr "管理者"
 
-#: accounts/models.py:16 templates/dashboard/admin_users.html:90
+#: accounts/models.py:16 templates/dashboard/admin_users.html:97
 msgid "Member"
 msgstr "メンバー"
 
-#: accounts/models.py:19
+#: accounts/models.py:19 templates/base.html:69 templates/base.html:77
+msgid "Light"
+msgstr "ライト"
+
+#: accounts/models.py:20 templates/base.html:69 templates/base.html:86
+msgid "Dark"
+msgstr "ダーク"
+
+#: accounts/models.py:21 templates/base.html:69 templates/base.html:95
+msgid "Sepia"
+msgstr "セピア"
+
+#: accounts/models.py:24
 msgid "email address"
 msgstr "メールアドレス"
 
-#: accounts/models.py:25
+#: accounts/models.py:30
 msgid "Admin users can manage all peers and invite new users."
 msgstr "管理者はすべてのピアを管理し、新しいユーザーを招待できます。"
 
-#: accounts/models.py:32
+#: accounts/models.py:37
 msgid "language"
 msgstr "言語"
 
-#: accounts/models.py:33
+#: accounts/models.py:38
 msgid "Preferred language for the user interface and emails."
 msgstr "ユーザーインターフェースとメールの優先言語。"
 
-#: accounts/models.py:41
+#: accounts/models.py:45
+msgid "theme"
+msgstr "テーマ"
+
+#: accounts/models.py:46
+msgid "Preferred colour theme for the user interface."
+msgstr "ユーザーインターフェースの優先カラーテーマ。"
+
+#: accounts/models.py:54
 msgid "user"
 msgstr "ユーザー"
 
-#: accounts/models.py:42
+#: accounts/models.py:55
 msgid "users"
 msgstr "ユーザー"
 
@@ -82,75 +102,81 @@ msgid ""
 "must be a free address within the interface subnet."
 msgstr ""
 
-#: dashboard/views.py:123 templates/dashboard/interface_status.html:11
+#: dashboard/views.py:144 templates/dashboard/interface_status.html:11
 msgid "No WireGuard interface configured."
 msgstr "WireGuardインターフェースが設定されていません。"
 
-#: dashboard/views.py:148
+#: dashboard/views.py:169
 #, python-format
 msgid "Failed to create peer: %s"
 msgstr "ピアの作成に失敗しました: %s"
 
-#: dashboard/views.py:182
+#: dashboard/views.py:203
 msgid ""
 "The private key for this configuration is no longer available. You can "
 "regenerate the keypair to get a new one."
 msgstr ""
 
-#: dashboard/views.py:195
+#: dashboard/views.py:216
 #, python-format
 msgid "Configuration for '%s' is ready."
 msgstr "「%s」の設定が完了しました。"
 
-#: dashboard/views.py:243
+#: dashboard/views.py:264
 msgid ""
 "<p class=\"text-muted small\">QR code unavailable — private key no longer "
 "stored. Use \"Regenerate keypair\" to create a new one.</p>"
 msgstr ""
 
-#: dashboard/views.py:273
+#: dashboard/views.py:294
 #, python-format
 msgid "Failed to regenerate keypair: %s"
 msgstr "鍵ペアの再生成に失敗しました: %s"
 
-#: dashboard/views.py:308
+#: dashboard/views.py:329
 #, python-format
 msgid "Peer '%s' deleted."
 msgstr "ピア「%s」を削除しました。"
 
-#: dashboard/views.py:310
+#: dashboard/views.py:331
 #, python-format
 msgid "Error deleting peer: %s"
 msgstr "ピアの削除中にエラーが発生しました: %s"
 
-#: dashboard/views.py:331
+#: dashboard/views.py:352
 msgid "Please provide an email address."
 msgstr "メールアドレスを入力してください。"
 
-#: dashboard/views.py:334
+#: dashboard/views.py:355
 #, python-format
 msgid "%s is already a registered user."
 msgstr "%s は既に登録済みのユーザーです。"
 
-#: dashboard/views.py:337
+#: dashboard/views.py:360
 #, python-format
 msgid "An invitation is already pending for %s."
 msgstr "%s への招待は既に保留中です。"
 
-#: dashboard/views.py:341
+#: dashboard/views.py:366
 #, python-format
 msgid "Invitation sent to %s."
 msgstr "%s に招待を送信しました。"
 
-#: dashboard/views.py:351 dashboard/views.py:358
+#: dashboard/views.py:381
+#, fuzzy, python-format
+#| msgid "Peer '%s' deleted."
+msgid "Invitation for %s has been cancelled."
+msgstr "ピア「%s」を削除しました。"
+
+#: dashboard/views.py:391 dashboard/views.py:398
 msgid "You cannot delete yourself."
 msgstr ""
 
-#: dashboard/views.py:363
+#: dashboard/views.py:403
 msgid "Incorrect password. User not deleted."
 msgstr ""
 
-#: dashboard/views.py:376
+#: dashboard/views.py:420
 #, fuzzy, python-format
 #| msgid "Peer '%s' deleted."
 msgid "User %s has been deleted."
@@ -296,26 +322,70 @@ msgstr "WireGuard ステータス"
 msgid "Django Admin"
 msgstr "Django 管理"
 
-#: templates/base.html:70 templates/dashboard/admin_users.html:27
+#: templates/base.html:67
+msgid "Theme"
+msgstr "テーマ"
+
+#: templates/base.html:106 templates/dashboard/admin_users.html:27
 msgid "Language"
 msgstr "言語"
 
-#: templates/base.html:95
+#: templates/base.html:131
 msgid "Passkeys &amp; 2FA"
 msgstr "パスキー &amp; 2FA"
 
-#: templates/base.html:98
+#: templates/base.html:134
 msgid "Change password"
 msgstr "パスワード変更"
 
-#: templates/base.html:105
+#: templates/base.html:141
 msgid "Logout"
 msgstr "ログアウト"
 
-#: templates/base.html:129
+#: templates/base.html:165
 #, python-format
 msgid "%(site_name)s — WireGuard Administration UI"
 msgstr "%(site_name)s — WireGuard 管理 UI"
+
+#: templates/dashboard/admin_invitation_delete_confirm.html:4
+#, fuzzy
+#| msgid "Send invitation"
+msgid "Cancel Invitation"
+msgstr "招待を送信"
+
+#: templates/dashboard/admin_invitation_delete_confirm.html:11
+#, fuzzy
+#| msgid "Pending invitations"
+msgid "Cancel Pending Invitation"
+msgstr "保留中の招待"
+
+#: templates/dashboard/admin_invitation_delete_confirm.html:15
+#, fuzzy, python-format
+#| msgid "Are you sure you want to delete <strong>%(name)s</strong>?"
+msgid ""
+"Are you sure you want to cancel the pending invitation for "
+"<strong>%(email)s</strong>?"
+msgstr "<strong>%(name)s</strong> を本当に削除しますか？"
+
+#: templates/dashboard/admin_invitation_delete_confirm.html:18
+msgid ""
+"The invitation link will become invalid. You can send a new invitation "
+"afterwards."
+msgstr ""
+
+#: templates/dashboard/admin_invitation_delete_confirm.html:25
+#: templates/dashboard/admin_user_delete_confirm.html:30
+#: templates/dashboard/peer_create.html:42
+#: templates/dashboard/peer_delete_confirm.html:28
+#: templates/dashboard/peer_regenerate_confirm.html:26
+msgid "Cancel"
+msgstr "キャンセル"
+
+#: templates/dashboard/admin_invitation_delete_confirm.html:28
+#, fuzzy
+#| msgid "Send invitation"
+msgid "Delete Invitation"
+msgstr "招待を送信"
 
 #: templates/dashboard/admin_user_delete_confirm.html:4
 #: templates/dashboard/admin_user_delete_confirm.html:33
@@ -344,13 +414,6 @@ msgstr ""
 msgid "Please enter your password to confirm:"
 msgstr ""
 
-#: templates/dashboard/admin_user_delete_confirm.html:30
-#: templates/dashboard/peer_create.html:42
-#: templates/dashboard/peer_delete_confirm.html:28
-#: templates/dashboard/peer_regenerate_confirm.html:26
-msgid "Cancel"
-msgstr "キャンセル"
-
 #: templates/dashboard/admin_users.html:7
 msgid "User management"
 msgstr "ユーザー管理"
@@ -378,50 +441,56 @@ msgstr "招待を送信"
 msgid "Pending invitations"
 msgstr "保留中の招待"
 
-#: templates/dashboard/admin_users.html:64
+#: templates/dashboard/admin_users.html:56
+#, fuzzy
+#| msgid "Send invitation"
+msgid "Cancel invitation"
+msgstr "招待を送信"
+
+#: templates/dashboard/admin_users.html:71
 #, python-format
 msgid "Registered users (%(count)s)"
 msgstr "登録ユーザー (%(count)s)"
 
-#: templates/dashboard/admin_users.html:70
+#: templates/dashboard/admin_users.html:77
 msgid "Email"
 msgstr "メール"
 
-#: templates/dashboard/admin_users.html:72
+#: templates/dashboard/admin_users.html:79
 #: templates/dashboard/interface_status.html:23
 #: templates/dashboard/interface_status.html:82
 msgid "Status"
 msgstr "ステータス"
 
-#: templates/dashboard/admin_users.html:73
+#: templates/dashboard/admin_users.html:80
 msgid "Joined"
 msgstr "参加日"
 
-#: templates/dashboard/admin_users.html:74
+#: templates/dashboard/admin_users.html:81
 #, fuzzy
 #| msgid "Active"
 msgid "Actions"
 msgstr "有効"
 
-#: templates/dashboard/admin_users.html:83
+#: templates/dashboard/admin_users.html:90
 msgid "you"
 msgstr "あなた"
 
-#: templates/dashboard/admin_users.html:95
+#: templates/dashboard/admin_users.html:102
 msgid "Active"
 msgstr "有効"
 
-#: templates/dashboard/admin_users.html:97
+#: templates/dashboard/admin_users.html:104
 msgid "Inactive"
 msgstr "無効"
 
-#: templates/dashboard/admin_users.html:103
+#: templates/dashboard/admin_users.html:110
 #, fuzzy
 #| msgid "Delete"
 msgid "Delete user"
 msgstr "削除"
 
-#: templates/dashboard/admin_users.html:111
+#: templates/dashboard/admin_users.html:118
 msgid "No users to display"
 msgstr ""
 
@@ -2050,15 +2119,15 @@ msgstr "Django 管理"
 msgid "Connect, get help, or contribute"
 msgstr ""
 
-#: wgadminui/settings.py:235
+#: wgadminui/settings.py:236
 msgid "English"
 msgstr "英語"
 
-#: wgadminui/settings.py:236
+#: wgadminui/settings.py:237
 msgid "German"
 msgstr "ドイツ語"
 
-#: wgadminui/settings.py:237
+#: wgadminui/settings.py:238
 msgid "Japanese"
 msgstr "日本語"
 
@@ -2121,31 +2190,3 @@ msgstr "ピア設定"
 #: wireguard/models.py:136
 msgid "peer configurations"
 msgstr "ピア設定"
-
-# Translations for django-invitations email templates (not shipped with the
-# package for Japanese, so provided here in the project locale).
-#: invitations/templates/invitations/email/email_invite_subject.txt
-#, python-format
-msgid "Invitation to join %(site_name)s"
-msgstr "%(site_name)s への招待"
-
-#: invitations/templates/invitations/email/email_invite_message.txt
-#, python-format
-msgid ""
-"\n"
-"\n"
-"Hello,\n"
-"\n"
-"You (%(email)s) have been invited to join %(site_name)s\n"
-"\n"
-"If you'd like to join, please go to %(invite_url)s\n"
-"\n"
-msgstr ""
-"\n"
-"\n"
-"こんにちは、\n"
-"\n"
-"%(email)s さんは %(site_name)s に招待されています。\n"
-"\n"
-"参加するには、%(invite_url)s にアクセスしてください。\n"
-"\n"

@@ -1,7 +1,7 @@
 {% load i18n %}
 {% load static %}
 <!doctype html>
-<html lang="{{ LANGUAGE_CODE }}" data-bs-theme="auto">
+<html lang="{{ LANGUAGE_CODE }}" data-theme="{{ user_theme }}" data-bs-theme="{% if user_theme == 'dark' %}dark{% else %}light{% endif %}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -62,6 +62,42 @@
       </ul>
       {% if user.is_authenticated %}
         <ul class="navbar-nav">
+          {# ── Theme selector ── #}
+          <li class="nav-item dropdown me-2">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" title="{% trans "Theme" %}">
+              <i class="bi bi-circle-half me-1"></i>
+              {% if user_theme == "dark" %}{% trans "Dark" %}{% elif user_theme == "sepia" %}{% trans "Sepia" %}{% else %}{% trans "Light" %}{% endif %}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <form method="post" action="{% url 'set_theme' %}" class="d-inline">
+                  {% csrf_token %}
+                  <input type="hidden" name="theme" value="light">
+                  <button type="submit" class="dropdown-item{% if user_theme == 'light' %} active{% endif %}">
+                    <i class="bi bi-sun me-1"></i>{% trans "Light" %}
+                  </button>
+                </form>
+              </li>
+              <li>
+                <form method="post" action="{% url 'set_theme' %}" class="d-inline">
+                  {% csrf_token %}
+                  <input type="hidden" name="theme" value="dark">
+                  <button type="submit" class="dropdown-item{% if user_theme == 'dark' %} active{% endif %}">
+                    <i class="bi bi-moon me-1"></i>{% trans "Dark" %}
+                  </button>
+                </form>
+              </li>
+              <li>
+                <form method="post" action="{% url 'set_theme' %}" class="d-inline">
+                  {% csrf_token %}
+                  <input type="hidden" name="theme" value="sepia">
+                  <button type="submit" class="dropdown-item{% if user_theme == 'sepia' %} active{% endif %}">
+                    <i class="bi bi-palette me-1"></i>{% trans "Sepia" %}
+                  </button>
+                </form>
+              </li>
+            </ul>
+          </li>
           {# ── Language selector ── #}
           <li class="nav-item dropdown me-2">
             {% get_current_language as CURRENT_LANG %}

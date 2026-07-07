@@ -15,6 +15,11 @@ class User(AbstractUser):
         ADMIN = "admin", _("Admin")
         MEMBER = "member", _("Member")
 
+    class Theme(models.TextChoices):
+        LIGHT = "light", _("Light")
+        DARK = "dark", _("Dark")
+        SEPIA = "sepia", _("Sepia")
+
     # Override email to make it unique and required
     email = models.EmailField(_("email address"), unique=True)
 
@@ -31,6 +36,14 @@ class User(AbstractUser):
         default=settings.LANGUAGE_CODE,
         verbose_name=_("language"),
         help_text=_("Preferred language for the user interface and emails."),
+    )
+
+    theme = models.CharField(
+        max_length=10,
+        choices=Theme.choices,
+        default=Theme.LIGHT,
+        verbose_name=_("theme"),
+        help_text=_("Preferred colour theme for the user interface."),
     )
 
     USERNAME_FIELD = "email"

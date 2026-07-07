@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-06 07:19+0000\n"
+"POT-Creation-Date: 2026-07-07 20:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,41 +18,61 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: accounts/admin.py:16 templates/dashboard/admin_users.html:71
+#: accounts/admin.py:16 templates/dashboard/admin_users.html:78
 msgid "Role"
 msgstr "Rolle"
 
 #: accounts/models.py:15 templates/base.html:45
-#: templates/dashboard/admin_users.html:88
+#: templates/dashboard/admin_users.html:95
 msgid "Admin"
 msgstr "Administrator"
 
-#: accounts/models.py:16 templates/dashboard/admin_users.html:90
+#: accounts/models.py:16 templates/dashboard/admin_users.html:97
 msgid "Member"
 msgstr "Mitglied"
 
-#: accounts/models.py:19
+#: accounts/models.py:19 templates/base.html:69 templates/base.html:77
+msgid "Light"
+msgstr "Hell"
+
+#: accounts/models.py:20 templates/base.html:69 templates/base.html:86
+msgid "Dark"
+msgstr "Dunkel"
+
+#: accounts/models.py:21 templates/base.html:69 templates/base.html:95
+msgid "Sepia"
+msgstr "Sepia"
+
+#: accounts/models.py:24
 msgid "email address"
 msgstr "E-Mail-Adresse"
 
-#: accounts/models.py:25
+#: accounts/models.py:30
 msgid "Admin users can manage all peers and invite new users."
 msgstr ""
 "Administratoren können alle Peers verwalten und neue Benutzer einladen."
 
-#: accounts/models.py:32
+#: accounts/models.py:37
 msgid "language"
 msgstr "Sprache"
 
-#: accounts/models.py:33
+#: accounts/models.py:38
 msgid "Preferred language for the user interface and emails."
 msgstr "Bevorzugte Sprache für die Benutzeroberfläche und E-Mails."
 
-#: accounts/models.py:41
+#: accounts/models.py:45
+msgid "theme"
+msgstr "Farbschema"
+
+#: accounts/models.py:46
+msgid "Preferred colour theme for the user interface."
+msgstr "Bevorzugtes Farbschema für die Benutzeroberfläche."
+
+#: accounts/models.py:54
 msgid "user"
 msgstr "Benutzer"
 
-#: accounts/models.py:42
+#: accounts/models.py:55
 msgid "users"
 msgstr "Benutzer"
 
@@ -83,75 +103,81 @@ msgid ""
 "must be a free address within the interface subnet."
 msgstr ""
 
-#: dashboard/views.py:123 templates/dashboard/interface_status.html:11
+#: dashboard/views.py:144 templates/dashboard/interface_status.html:11
 msgid "No WireGuard interface configured."
 msgstr "Kein WireGuard-Interface konfiguriert."
 
-#: dashboard/views.py:148
+#: dashboard/views.py:169
 #, python-format
 msgid "Failed to create peer: %s"
 msgstr "Fehler beim Erstellen des Peers: %s"
 
-#: dashboard/views.py:182
+#: dashboard/views.py:203
 msgid ""
 "The private key for this configuration is no longer available. You can "
 "regenerate the keypair to get a new one."
 msgstr ""
 
-#: dashboard/views.py:195
+#: dashboard/views.py:216
 #, python-format
 msgid "Configuration for '%s' is ready."
 msgstr "Konfiguration fuer '%s' ist bereit."
 
-#: dashboard/views.py:243
+#: dashboard/views.py:264
 msgid ""
 "<p class=\"text-muted small\">QR code unavailable — private key no longer "
 "stored. Use \"Regenerate keypair\" to create a new one.</p>"
 msgstr ""
 
-#: dashboard/views.py:273
+#: dashboard/views.py:294
 #, python-format
 msgid "Failed to regenerate keypair: %s"
 msgstr "Fehler beim Neugenerieren des Schlüsselpaars: %s"
 
-#: dashboard/views.py:308
+#: dashboard/views.py:329
 #, python-format
 msgid "Peer '%s' deleted."
 msgstr "Peer '%s' geloescht."
 
-#: dashboard/views.py:310
+#: dashboard/views.py:331
 #, python-format
 msgid "Error deleting peer: %s"
 msgstr "Fehler beim Löschen des Peers: %s"
 
-#: dashboard/views.py:331
+#: dashboard/views.py:352
 msgid "Please provide an email address."
 msgstr "Bitte geben Sie eine E-Mail-Adresse an."
 
-#: dashboard/views.py:334
+#: dashboard/views.py:355
 #, python-format
 msgid "%s is already a registered user."
 msgstr "%s ist bereits ein registrierter Benutzer."
 
-#: dashboard/views.py:337
+#: dashboard/views.py:360
 #, python-format
 msgid "An invitation is already pending for %s."
 msgstr "Für %s ist bereits eine Einladung ausstehend."
 
-#: dashboard/views.py:341
+#: dashboard/views.py:366
 #, python-format
 msgid "Invitation sent to %s."
 msgstr "Einladung an %s gesendet."
 
-#: dashboard/views.py:351 dashboard/views.py:358
+#: dashboard/views.py:381
+#, fuzzy, python-format
+#| msgid "Peer '%s' deleted."
+msgid "Invitation for %s has been cancelled."
+msgstr "Peer '%s' geloescht."
+
+#: dashboard/views.py:391 dashboard/views.py:398
 msgid "You cannot delete yourself."
 msgstr ""
 
-#: dashboard/views.py:363
+#: dashboard/views.py:403
 msgid "Incorrect password. User not deleted."
 msgstr ""
 
-#: dashboard/views.py:376
+#: dashboard/views.py:420
 #, fuzzy, python-format
 #| msgid "Peer '%s' deleted."
 msgid "User %s has been deleted."
@@ -299,26 +325,70 @@ msgstr "WireGuard-Status"
 msgid "Django Admin"
 msgstr "Django-Admin"
 
-#: templates/base.html:70 templates/dashboard/admin_users.html:27
+#: templates/base.html:67
+msgid "Theme"
+msgstr "Farbschema"
+
+#: templates/base.html:106 templates/dashboard/admin_users.html:27
 msgid "Language"
 msgstr "Sprache"
 
-#: templates/base.html:95
+#: templates/base.html:131
 msgid "Passkeys &amp; 2FA"
 msgstr "Passkeys &amp; 2FA"
 
-#: templates/base.html:98
+#: templates/base.html:134
 msgid "Change password"
 msgstr "Passwort ändern"
 
-#: templates/base.html:105
+#: templates/base.html:141
 msgid "Logout"
 msgstr "Abmelden"
 
-#: templates/base.html:129
+#: templates/base.html:165
 #, python-format
 msgid "%(site_name)s — WireGuard Administration UI"
 msgstr "%(site_name)s — WireGuard-Administrationsoberfläche"
+
+#: templates/dashboard/admin_invitation_delete_confirm.html:4
+#, fuzzy
+#| msgid "Send invitation"
+msgid "Cancel Invitation"
+msgstr "Einladung senden"
+
+#: templates/dashboard/admin_invitation_delete_confirm.html:11
+#, fuzzy
+#| msgid "Pending invitations"
+msgid "Cancel Pending Invitation"
+msgstr "Ausstehende Einladungen"
+
+#: templates/dashboard/admin_invitation_delete_confirm.html:15
+#, fuzzy, python-format
+#| msgid "Are you sure you want to delete <strong>%(name)s</strong>?"
+msgid ""
+"Are you sure you want to cancel the pending invitation for "
+"<strong>%(email)s</strong>?"
+msgstr "Möchten Sie <strong>%(name)s</strong> wirklich löschen?"
+
+#: templates/dashboard/admin_invitation_delete_confirm.html:18
+msgid ""
+"The invitation link will become invalid. You can send a new invitation "
+"afterwards."
+msgstr ""
+
+#: templates/dashboard/admin_invitation_delete_confirm.html:25
+#: templates/dashboard/admin_user_delete_confirm.html:30
+#: templates/dashboard/peer_create.html:42
+#: templates/dashboard/peer_delete_confirm.html:28
+#: templates/dashboard/peer_regenerate_confirm.html:26
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: templates/dashboard/admin_invitation_delete_confirm.html:28
+#, fuzzy
+#| msgid "Send invitation"
+msgid "Delete Invitation"
+msgstr "Einladung senden"
 
 #: templates/dashboard/admin_user_delete_confirm.html:4
 #: templates/dashboard/admin_user_delete_confirm.html:33
@@ -347,13 +417,6 @@ msgstr ""
 msgid "Please enter your password to confirm:"
 msgstr ""
 
-#: templates/dashboard/admin_user_delete_confirm.html:30
-#: templates/dashboard/peer_create.html:42
-#: templates/dashboard/peer_delete_confirm.html:28
-#: templates/dashboard/peer_regenerate_confirm.html:26
-msgid "Cancel"
-msgstr "Abbrechen"
-
 #: templates/dashboard/admin_users.html:7
 msgid "User management"
 msgstr "Benutzerverwaltung"
@@ -381,50 +444,56 @@ msgstr "Einladung senden"
 msgid "Pending invitations"
 msgstr "Ausstehende Einladungen"
 
-#: templates/dashboard/admin_users.html:64
+#: templates/dashboard/admin_users.html:56
+#, fuzzy
+#| msgid "Send invitation"
+msgid "Cancel invitation"
+msgstr "Einladung senden"
+
+#: templates/dashboard/admin_users.html:71
 #, python-format
 msgid "Registered users (%(count)s)"
 msgstr "Registrierte Benutzer (%(count)s)"
 
-#: templates/dashboard/admin_users.html:70
+#: templates/dashboard/admin_users.html:77
 msgid "Email"
 msgstr "E-Mail"
 
-#: templates/dashboard/admin_users.html:72
+#: templates/dashboard/admin_users.html:79
 #: templates/dashboard/interface_status.html:23
 #: templates/dashboard/interface_status.html:82
 msgid "Status"
 msgstr "Status"
 
-#: templates/dashboard/admin_users.html:73
+#: templates/dashboard/admin_users.html:80
 msgid "Joined"
 msgstr "Beigetreten"
 
-#: templates/dashboard/admin_users.html:74
+#: templates/dashboard/admin_users.html:81
 #, fuzzy
 #| msgid "Active"
 msgid "Actions"
 msgstr "Aktiv"
 
-#: templates/dashboard/admin_users.html:83
+#: templates/dashboard/admin_users.html:90
 msgid "you"
 msgstr "Sie"
 
-#: templates/dashboard/admin_users.html:95
+#: templates/dashboard/admin_users.html:102
 msgid "Active"
 msgstr "Aktiv"
 
-#: templates/dashboard/admin_users.html:97
+#: templates/dashboard/admin_users.html:104
 msgid "Inactive"
 msgstr "Inaktiv"
 
-#: templates/dashboard/admin_users.html:103
+#: templates/dashboard/admin_users.html:110
 #, fuzzy
 #| msgid "Delete"
 msgid "Delete user"
 msgstr "Löschen"
 
-#: templates/dashboard/admin_users.html:111
+#: templates/dashboard/admin_users.html:118
 msgid "No users to display"
 msgstr ""
 
@@ -2074,15 +2143,15 @@ msgstr "Django-Admin"
 msgid "Connect, get help, or contribute"
 msgstr ""
 
-#: wgadminui/settings.py:235
+#: wgadminui/settings.py:236
 msgid "English"
 msgstr "Englisch"
 
-#: wgadminui/settings.py:236
+#: wgadminui/settings.py:237
 msgid "German"
 msgstr "Deutsch"
 
-#: wgadminui/settings.py:237
+#: wgadminui/settings.py:238
 msgid "Japanese"
 msgstr "Japanisch"
 

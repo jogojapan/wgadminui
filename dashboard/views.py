@@ -71,6 +71,27 @@ class LanguageSetView(LoginRequiredMixin, View):
         return redirect(next_url)
 
 
+# ---------------------------------------------------------------------------
+# Theme switching
+# ---------------------------------------------------------------------------
+
+
+class ThemeSetView(LoginRequiredMixin, View):
+    """POST-only view that persists the user's theme choice."""
+
+    def post(self, request):
+        from accounts.models import User
+
+        theme = request.POST.get("theme")
+        valid_themes = dict(User.Theme.choices)
+        if theme in valid_themes:
+            request.user.theme = theme
+            request.user.save(update_fields=["theme"])
+        # Redirect back to the referring page, or dashboard as fallback
+        next_url = request.META.get("HTTP_REFERER", "/")
+        return redirect(next_url)
+
+
 def _get_default_interface():
     """Return the first WireguardInterface, or None."""
     return WireguardInterface.objects.first()

@@ -9,6 +9,9 @@ urlpatterns = [
     # Language switching
     path("set-language/", views.LanguageSetView.as_view(), name="set_language"),
 
+    # Theme switching
+    path("set-theme/", views.ThemeSetView.as_view(), name="set_theme"),
+
     # Peer management
     path("peers/new/", views.PeerCreateView.as_view(), name="peer_create"),
     path("peers/<uuid:pk>/", views.PeerDetailView.as_view(), name="peer_detail"),

@@ -86,6 +86,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.i18n",
                 "wgadminui.context_processors.site_info",
+                "wgadminui.context_processors.user_theme",
             ],
         },
     },
